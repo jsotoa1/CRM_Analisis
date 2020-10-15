@@ -1,4 +1,5 @@
 ﻿using CRM_Analisis_WEB.Data.Entidades;
+using CRM_Analisis_WEB.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,11 @@ namespace CRM_Analisis_WEB.Helpers
         Task AddUserToRoleAsync(User user, string roleName);
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+        Task<SignInResult> LoginAsync(LoginViewModel model);
+
+        Task LogoutAsync();
+
     }
 
 }
