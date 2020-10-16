@@ -14,7 +14,7 @@ namespace CRM_Analisis_WEB.Helpers
 
         Task<IdentityResult> AddUserAsync(User user, string password);
 
-        Task CheckRoleAsync(string roleName);
+        Task AddRoleAsync(Rol rol);
 
         Task AddUserToRoleAsync(User user, string roleName);
 

@@ -1,93 +1,113 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CRM_Analisis_WEB</title>
+    <meta http-equiv="Content-Type" content="text/html" ; charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/styles/style.min.css" />
+    <link rel="stylesheet" href="~/Content/sweetalert/sweetalert2.css" />
+    <link rel="stylesheet" href="~/Content/styles/chosen.css" />
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    <script src="~/Scripts/metodos/Ajax.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/scripts/script.min.js"></script>
+    <script src="~/Scripts/sweetalert/sweetalert2.all.7.30.js"></script>
+    <script src="~/Scripts/app.js"></script>
+    <script src="~/Scripts/chosen.jquery.js"></script>
+
+    <style type="text/css">
+        .select2-dropdown {
+            top: 22px !important;
+            left: 8px !important;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .tablaObjeto2 {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 100%;
+        }
+
+        .tblmodal2 {
+            height: 250px !important;
+            width: auto !important;
+        }
+
+        .attr {
+            height: auto !important;
+            width: auto !important;
+            overflow: auto !important;
+        }
+
+        #srcTable {
+            width: 165px !important;
+        }
+
+        /*Palabra Menú en vez de icono*/
+        .menu-icon {
+            padding: 6px;
+            padding-left: 10px;
+            width: 80px;
+        }
+
+        .iconMenu {
+            width: 50px;
+        }
+    </style>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">CRM_Analisis_WEB</a>
+
+    <!-- header -->
+    <div id="wait-dialog" class="pre-loader" style="opacity: 0.75;"></div>
+    <div class="header clearfix" id="parte2">
+        <div class="header-right">
+
+            <h4 class="menu-icon">
+                Menú
+            </h4>
+
+            <div class="menu-icon iconMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                    {
-                        <li><a asp-area="" asp-controller="Countries" asp-action="Index">Countries</a></li>
-                        <li><a asp-area="" asp-controller="Categories" asp-action="Index">Categories</a></li>
-                        <li><a asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
-                    }
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li><a asp-area="" asp-controller="Account" asp-action="ChangeUser">@User.Identity.Name</a></li>
-                        <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
-                    }
-                    else
-                    {
-                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
-                    }
-                </ul>
+
+            <div class="user-info-dropdown">
+                <div class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                        <span class="user-icon"><i class="fa fa-user-o"></i></span>
+                        <span class="user-name">@User.Identity.Name</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="@Url.Action("UserProfile", "ServiceLogin")"><i class="fa fa-user-md" aria-hidden="true"></i> Perfil</a>
+                        @*<a class="dropdown-item" href="#"><i class="fa fa-cog" aria-hidden="true"></i> Setting</a>
+                            <a class="dropdown-item" href="#"><i class="fa fa-question" aria-hidden="true"></i> Help</a>*@
+
+                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
 
 
-            </div>
+
         </div>
-    </nav>
-
-    <partial name="_CookieConsentPartial" />
-
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2020 - CRM_Analisis_WEB</p>
-        </footer>
     </div>
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-        </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+    <!-- container -->
+    <partial name="__LeftSideBar" />
+    <div class="main-container">
+        @RenderBody()
+    </div>
 
-    @RenderSection("Scripts", required: false)
 </body>
+
 </html>

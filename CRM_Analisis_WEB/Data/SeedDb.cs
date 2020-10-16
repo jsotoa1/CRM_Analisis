@@ -21,14 +21,23 @@ namespace CRM_Analisis_WEB.Data
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
-            await CheckRolesAsync();
-            await CheckUserAsync("12345", "José", "Soto", "jsotoa1@miumg.edu.gt", "322 311 4620", "Calle Luna Calle Sol", UserType.Admin);
+            await CheckRolesAsync("Administrador", "Acceso a todo", true);
+            await CheckRolesAsync("Mensajero", "Solo area de mensajes", true);
+
+            var rol = new Rol { Name = "Administrador" };
+            await CheckUserAsync("12345", "José", "Soto", "jsotoa1@miumg.edu.gt", "322 311 4620", "Calle Luna Calle Sol", rol);
         }
 
-        private async Task CheckRolesAsync()
+        private async Task CheckRolesAsync(string name, string descripccion, bool estado)
         {
-            await _userHelper.CheckRoleAsync(UserType.Admin.ToString());
-            await _userHelper.CheckRoleAsync(UserType.User.ToString());
+            Rol rol = new Rol
+            {
+                Name = name,
+                Descripcion = descripccion,
+                Estado = estado
+            };
+
+            await _userHelper.AddRoleAsync(rol);
         }
 
         private async Task<User> CheckUserAsync(
@@ -38,7 +47,7 @@ namespace CRM_Analisis_WEB.Data
             string email,
             string phone,
             string address,
-            UserType userType)
+            Rol rol)
         {
             User user = await _userHelper.GetUserAsync(email);
             if (user == null)
@@ -52,11 +61,11 @@ namespace CRM_Analisis_WEB.Data
                     PhoneNumber = phone,
                     Address = address,
                     Document = document,
-                    UserType = userType
+                    Rol = rol
                 };
 
                 await _userHelper.AddUserAsync(user, "123456");
-                await _userHelper.AddUserToRoleAsync(user, userType.ToString());
+                await _userHelper.AddUserToRoleAsync(user, rol.Name);
             }
 
             return user;

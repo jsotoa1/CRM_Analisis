@@ -19,6 +19,59 @@ namespace CRM_Analisis_WEB.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("CRM_Analisis_WEB.Data.Entidades.Funcionalidad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(150);
+
+                    b.Property<bool>("Estado");
+
+                    b.Property<string>("FuncionalidadHijo");
+
+                    b.Property<int>("IdFuncionalidad");
+
+                    b.Property<string>("Imagen")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("NombreMenu")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("Observaciones")
+                        .HasMaxLength(150);
+
+                    b.Property<int>("Orden");
+
+                    b.Property<string>("Url")
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Funcionalidades");
+                });
+
+            modelBuilder.Entity("CRM_Analisis_WEB.Data.Entidades.RolFuncionalidad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("funcionalidadId");
+
+                    b.Property<string>("rolId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("funcionalidadId");
+
+                    b.HasIndex("rolId");
+
+                    b.ToTable("RolFuncionalidades");
+                });
+
             modelBuilder.Entity("CRM_Analisis_WEB.Data.Entidades.User", b =>
                 {
                     b.Property<string>("Id")
@@ -67,14 +120,14 @@ namespace CRM_Analisis_WEB.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("RolId");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
-
-                    b.Property<int>("UserType");
 
                     b.HasKey("Id");
 
@@ -86,6 +139,8 @@ namespace CRM_Analisis_WEB.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("RolId");
+
                     b.ToTable("AspNetUsers");
                 });
 
@@ -96,6 +151,9 @@ namespace CRM_Analisis_WEB.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
 
                     b.Property<string>("Name")
                         .HasMaxLength(256);
@@ -111,6 +169,8 @@ namespace CRM_Analisis_WEB.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -197,6 +257,38 @@ namespace CRM_Analisis_WEB.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("CRM_Analisis_WEB.Data.Entidades.Rol", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(150);
+
+                    b.Property<bool>("Estado");
+
+                    b.ToTable("Rol");
+
+                    b.HasDiscriminator().HasValue("Rol");
+                });
+
+            modelBuilder.Entity("CRM_Analisis_WEB.Data.Entidades.RolFuncionalidad", b =>
+                {
+                    b.HasOne("CRM_Analisis_WEB.Data.Entidades.Funcionalidad", "funcionalidad")
+                        .WithMany()
+                        .HasForeignKey("funcionalidadId");
+
+                    b.HasOne("CRM_Analisis_WEB.Data.Entidades.Rol", "rol")
+                        .WithMany()
+                        .HasForeignKey("rolId");
+                });
+
+            modelBuilder.Entity("CRM_Analisis_WEB.Data.Entidades.User", b =>
+                {
+                    b.HasOne("CRM_Analisis_WEB.Data.Entidades.Rol", "Rol")
+                        .WithMany()
+                        .HasForeignKey("RolId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

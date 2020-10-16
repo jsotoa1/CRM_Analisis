@@ -21,7 +21,7 @@ namespace CRM_Analisis_WEB.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Home", "Dashboard");
             }
 
             return View(new LoginViewModel());
@@ -40,7 +40,7 @@ namespace CRM_Analisis_WEB.Controllers
                         return Redirect(Request.Query["ReturnUrl"].First());
                     }
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Home", "Dashboard");
                 }
 
                 ModelState.AddModelError(string.Empty, "Email or password incorrect.");
@@ -52,7 +52,7 @@ namespace CRM_Analisis_WEB.Controllers
         public async Task<IActionResult> Logout()
         {
             await _userHelper.LogoutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Home", "Dashboard");
         }
     }
 

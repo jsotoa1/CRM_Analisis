@@ -3,9 +3,6 @@ using CRM_Analisis_WEB.Data.Entidades;
 using CRM_Analisis_WEB.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CRM_Analisis_WEB.Helpers
@@ -40,14 +37,16 @@ namespace CRM_Analisis_WEB.Helpers
             await _userManager.AddToRoleAsync(user, roleName);
         }
 
-        public async Task CheckRoleAsync(string roleName)
+        public async Task AddRoleAsync(Rol rol)
         {
-            bool roleExists = await _roleManager.RoleExistsAsync(roleName);
+            bool roleExists = await _roleManager.RoleExistsAsync(rol.Name);
             if (!roleExists)
             {
-                await _roleManager.CreateAsync(new IdentityRole
+                await _roleManager.CreateAsync(new Rol
                 {
-                    Name = roleName
+                    Name = rol.Name,
+                    Descripcion = rol.Descripcion,
+                    Estado = rol.Estado
                 });
             }
         }

@@ -1,0 +1,55 @@
+﻿.modal-lg {
+    max-width: 99% !important;
+}
+
+.row {
+    margin: 10px;
+}
+
+.tablaObjeto {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.modalRoll {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 495px;
+}
+
+.input-group .form-control {
+    float: none;
+}
+
+.input-group .input-buttons {
+    position: relative;
+    z-index: 3;
+}
+
+input.currency {
+    text-align: right;
+    padding-right: 15px;
+}
+
+.input-group .form-control {
+    float: none;
+}
+
+.input-group .input-buttons {
+    position: relative;
+    z-index: 3;
+}
+
+
+
+/*@media screen and (max-width:767px) {
+    table tr > * {
+        display: block;
+    }
+
+    table tr {
+        display: table-cell;
+        vertical-align: top;
+    }
+}*/

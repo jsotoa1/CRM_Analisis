@@ -1,0 +1,16 @@
+﻿@media print {
+    #parte1 {
+        display: none;
+    }
+
+    #parte2 {
+        display: none;
+    }
+    #accordion {
+        display: none;
+    }
+    #modalConfirm {
+        height: 100% !important;
+        overflow: hidden !important;
+    }
+}

@@ -35,8 +35,7 @@ namespace CRM_Analisis_WEB.Data.Entidades
             ? $"https://localhost:44390/images/noimage.png"
             : $"https://onsale.blob.core.windows.net/users/{ImageId}";
 
-        [Display(Name = "Tipo de Usuario")]
-        public UserType UserType { get; set; }
+        public Rol Rol { get; set; } 
 
         [Display(Name = "Usuario")]
         public string FullName => $"{FirstName} {LastName}";

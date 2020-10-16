@@ -1,47 +1,66 @@
-﻿
-@model CRM_Analisis_WEB.Models.LoginViewModel
+﻿@model CRM_Analisis_WEB.Models.LoginViewModel
 @{
-    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutServiceLogin.cshtml";
 }
 
-<h2>Login</h2>
 
-<div class="row">
-    <div class="col-md-4 offset-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly"></div>
+    <style type="text/css">
+        .text-error {
+            color: #DC3545;
+        }
+    </style>
 
-            <div class="form-group">
-                <label asp-for="Username">Username</label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-warning"></span>
+
+    <img src="@Url.Content("~/Content/images/crm_Logo.png")" alt="login" class="login-img" />
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        @Html.AntiForgeryToken()
+
+        <div class="input-group custom input-group-lg">
+            <input asp-for="Username" class="form-control" type="email" required placeholder="Usuario" />
+            <div class="input-group-append custom">
+                <span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span>
             </div>
-            <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+            <span asp-validation-for="Username" class="text-error"></span>
+        </div>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
 
-            <div class="form-group">
-                <label asp-for="Password">Password</label>
-                <input asp-for="Password" type="password" class="form-control" />
-                <span asp-validation-for="Password" class="text-warning"></span>
+        <div class="input-group custom input-group-lg">
+            <input asp-for="Password" class="form-control" type="password" required placeholder="Contraseña" />
+            <div class="input-group-append custom">
+                <span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
             </div>
+            <span asp-validation-for="Password" class="text-error"></span>
+        </div>
 
-            <div class="form-group">
-                <div class="form-check">
-                    <input asp-for="RememberMe" type="checkbox" class="form-check-input" />
-                    <label asp-for="RememberMe" class="form-check-label">Remember Me?</label>
+        <div class="input-group custom input-group-lg">
+            <div class="form-check">
+                <input asp-for="RememberMe" class="form-check-label cursor-pointer" type="checkbox" />
+                <label class="form-check-label cursor-pointer" for="recordarcontrasenia">Recordar Contraseña</label>
+            </div>
+            <span asp-validation-for="RememberMe" class="text-error"></span>
+        </div>
+
+        <div class="input-group custom input-group-lg">
+            <div class="g-recaptcha" data-sitekey="6LeJPxgUAAAAAN1K6llu58G26wXCOAhSxm7mvml9" data-callback="callbackRecaptcha"></div>
+            <div id="g-recaptcha-error" class="text-justify"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="input-group">
+                    <button class="btn btn-outline-primary btn-lg btn-block" type="submit">Acceder</button>
                 </div>
-                <span asp-validation-for="RememberMe" class="text-warning"></span>
             </div>
-
-            <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-success" />
-                <a asp-action="Register" class="btn btn-primary">Register New User</a>
+            <div class="col-sm-7">
+                <div class="forgot-password padding-top-10"><a href="@Url.Action("ForgotPassword", "ServiceLogin")">Olvidar Contraseña</a></div>
             </div>
-        </form>
-    </div>
-</div>
+        </div>
+    </form>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
 
 

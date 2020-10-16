@@ -1,0 +1,208 @@
+﻿
+@{
+    ViewData["Title"] = "mantRolUsuarioFunc";
+}
+<link rel="stylesheet" href="~/Content/DataTable/bootstrap.css" />
+<link rel="stylesheet" href="~/Content/DataTable/dataTables.bootstrap4.min.css" />
+<link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
+<link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
+<link rel="stylesheet" href="~/Content/styles/pageStyles.css" />
+
+<script src="~/Scripts/metodos/customAlert.js"></script>
+<script src="~/Scripts/metodos/generarTablas.js"></script>
+<script src="~/Content/DataTable/jquery.dataTables.min.js"></script>
+<script src="~/Content/DataTable/dataTables.bootstrap4.min.js"></script>
+<script src="~/Scripts/gijgo/gijgo.min.js"></script>
+<script src="~/Scripts/mantenimientoUsuario/funcionalidad.js"></script>
+@*<script src="~/Scripts/mantenimientoUsuario/Rol.js"></script>
+    <script src="~/Scripts/mantenimientoUsuario/Usuario.js"></script>*@
+<script src="~/Scripts/jquery-validate/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<style type="text/css">
+    .modal-lg {
+        max-width: 99% !important;
+    }
+
+    .modal-body {
+        max-height: calc(100vh - 145px);
+        overflow-y: auto;
+    }
+
+    .row {
+        margin: 10px;
+    }
+
+    .tablaObjeto {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 100%;
+    }
+
+    .modalRoll {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 495px;
+    }
+
+    #item-lb {
+        text-align: left;
+        margin-top: 0.5em;
+        padding: 6px;
+        color: darkslategrey;
+        font-size: 17px;
+    }
+</style>
+
+    <script type="text/javascript">
+
+    let idFuncionalidad = 0;
+        var rootPath = "@Url.Content("~")";
+
+
+        let idRol = 0;
+        let generalUsuario = "";
+
+        function valoresInicio(opcion) {
+            switch (opcion) {
+                case "#funcionalidad":
+                    mostrarFuncionalidad();
+                    break;
+                case "#rol":
+                    mostrarRol();
+                    break;
+                case "#usuario":
+                    mostrarUsuario();
+                    break;
+            }
+        }
+
+        $(document).ready(function () {
+
+            @* $('#txtCadContrasenia').mask('@Mascara.DosDigitos');*@
+
+
+            $('#example').DataTable();
+            mostrarFuncionalidad();
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var target = $(e.target).attr("href") // activated tab
+                valoresInicio(target);
+            });
+        });
+
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+        function msgBox(message, tipoMessage, tituloMessage) {
+            if (tituloMessage == null) {
+                tituloMessage = message;
+                message = '';
+            }
+
+            swal({
+                title: tituloMessage,
+                text: message,
+                type: tipoMessage,
+                confirmButtonClass: 'btn btn-success',
+                confirmButtonText: 'Aceptar',
+            });
+        }
+        //Funcionalidad
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = $('.validarFuncionalidad');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            form.classList.add('was-validated');
+                        }
+                        else {
+                            event.preventDefault();
+                            guardarFuncionalidad();
+                            $("#formFuncionalidad").removeClass("was-validated");
+
+                        }
+                    }, false);
+                });
+            }, false);
+        })();
+
+    </script>
+
+    <div class="container-fluid">
+        <br />
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#funcionalidad" role="tab" aria-controls="contact" aria-selected="false">Funcionalidad</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#rol" role="tab" aria-controls="profile" aria-selected="false">Rol</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " id="contact-tab" data-toggle="tab" href="#usuario" role="tab" aria-controls="home" aria-selected="true">Usuario</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            @*---------------Funcionalidad-----------------*@
+            <div class="tab-pane fade show active" id="funcionalidad" role="tabpanel" aria-labelledby="profile-tab">
+                <br />
+                <div class="container-fluid">
+                    @*----------------------------*@
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12">
+                            <div class="pull-left">
+                                <h4 class="text-blue">Mantenimiento Funcionalidad</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="" class="col-sm-10 col-md-10 col-xl-10 pull-right">
+
+
+                        </div>
+                        <div style="" class="col-sm-2 col-md-2 col-xl-2 pull-right">
+                            <button id="btnFuncionalidad" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalFuncionalidad" onclick="crearFuncionalidad()">Crear Funcionalidad</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12">
+                            <div class="tablaObjeto">
+                                <table id="tblFuncionalidad" class="table table-striped table-bordered" style="width:100%; ">
+                                    <thead>
+                                        <tr>
+                                            <th>Identificador</th>
+                                            <th>Descripción</th>
+                                            <th>Nombre Menú</th>
+                                            <th>URL</th>
+                                            <th>Imagen</th>
+                                            <th>Observaciones</th>
+                                            <th>Función Padre</th>
+                                            <th>Estado</th>
+                                            <th>Operaciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="valoresFuncion"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+    </div>
+
