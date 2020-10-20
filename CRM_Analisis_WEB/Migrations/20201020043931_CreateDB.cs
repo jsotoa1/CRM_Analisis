@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CRM_Analisis_WEB.Migrations
 {
-    public partial class User : Migration
+    public partial class CreateDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,19 +31,25 @@ namespace CRM_Analisis_WEB.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Descripcion = table.Column<string>(maxLength: 150, nullable: true),
+                    Descripcion = table.Column<string>(maxLength: 150, nullable: false),
+                    NombreMenu = table.Column<string>(maxLength: 150, nullable: false),
                     Url = table.Column<string>(maxLength: 250, nullable: true),
                     Imagen = table.Column<string>(maxLength: 50, nullable: true),
                     Observaciones = table.Column<string>(maxLength: 150, nullable: true),
-                    IdFuncionalidad = table.Column<int>(nullable: false),
+                    IdFuncionalidadId = table.Column<int>(nullable: true),
                     Orden = table.Column<int>(nullable: false),
                     FuncionalidadHijo = table.Column<string>(nullable: true),
-                    NombreMenu = table.Column<string>(maxLength: 150, nullable: true),
                     Estado = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Funcionalidades", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Funcionalidades_Funcionalidades_IdFuncionalidadId",
+                        column: x => x.IdFuncionalidadId,
+                        principalTable: "Funcionalidades",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -105,6 +111,32 @@ namespace CRM_Analisis_WEB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RolFuncionalidades",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    rolId = table.Column<string>(nullable: true),
+                    funcionalidadId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RolFuncionalidades", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RolFuncionalidades_Funcionalidades_funcionalidadId",
+                        column: x => x.funcionalidadId,
+                        principalTable: "Funcionalidades",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RolFuncionalidades_AspNetRoles_rolId",
+                        column: x => x.rolId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
@@ -155,7 +187,7 @@ namespace CRM_Analisis_WEB.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
-                    
+                   
                 });
 
             migrationBuilder.CreateTable(
@@ -221,6 +253,21 @@ namespace CRM_Analisis_WEB.Migrations
                 name: "IX_AspNetUsers_RolId",
                 table: "AspNetUsers",
                 column: "RolId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Funcionalidades_IdFuncionalidadId",
+                table: "Funcionalidades",
+                column: "IdFuncionalidadId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RolFuncionalidades_funcionalidadId",
+                table: "RolFuncionalidades",
+                column: "funcionalidadId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RolFuncionalidades_rolId",
+                table: "RolFuncionalidades",
+                column: "rolId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -241,10 +288,13 @@ namespace CRM_Analisis_WEB.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Funcionalidades");
+                name: "RolFuncionalidades");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Funcionalidades");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

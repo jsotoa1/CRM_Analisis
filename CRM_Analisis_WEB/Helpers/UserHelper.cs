@@ -40,6 +40,7 @@ namespace CRM_Analisis_WEB.Helpers
         public async Task AddRoleAsync(Rol rol)
         {
             bool roleExists = await _roleManager.RoleExistsAsync(rol.Name);
+
             if (!roleExists)
             {
                 await _roleManager.CreateAsync(new Rol

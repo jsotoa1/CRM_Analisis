@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRM_Analisis_WEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201016034526_RolFuncionalidades")]
-    partial class RolFuncionalidades
+    [Migration("20201020043931_CreateDB")]
+    partial class CreateDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,18 +28,20 @@ namespace CRM_Analisis_WEB.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasMaxLength(150);
 
                     b.Property<bool>("Estado");
 
                     b.Property<string>("FuncionalidadHijo");
 
-                    b.Property<int>("IdFuncionalidad");
+                    b.Property<int?>("IdFuncionalidadId");
 
                     b.Property<string>("Imagen")
                         .HasMaxLength(50);
 
                     b.Property<string>("NombreMenu")
+                        .IsRequired()
                         .HasMaxLength(150);
 
                     b.Property<string>("Observaciones")
@@ -51,6 +53,8 @@ namespace CRM_Analisis_WEB.Migrations
                         .HasMaxLength(250);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdFuncionalidadId");
 
                     b.ToTable("Funcionalidades");
                 });
@@ -275,13 +279,20 @@ namespace CRM_Analisis_WEB.Migrations
                     b.HasDiscriminator().HasValue("Rol");
                 });
 
+            modelBuilder.Entity("CRM_Analisis_WEB.Data.Entidades.Funcionalidad", b =>
+                {
+                    b.HasOne("CRM_Analisis_WEB.Data.Entidades.Funcionalidad", "IdFuncionalidad")
+                        .WithMany()
+                        .HasForeignKey("IdFuncionalidadId");
+                });
+
             modelBuilder.Entity("CRM_Analisis_WEB.Data.Entidades.RolFuncionalidad", b =>
                 {
                     b.HasOne("CRM_Analisis_WEB.Data.Entidades.Funcionalidad", "funcionalidad")
                         .WithMany()
                         .HasForeignKey("funcionalidadId");
 
-                    b.HasOne("CRM_Analisis_WEB.Data.Entidades.Rol", "rol")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "rol")
                         .WithMany()
                         .HasForeignKey("rolId");
                 });
