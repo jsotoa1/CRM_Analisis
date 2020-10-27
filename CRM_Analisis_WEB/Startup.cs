@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CRM_Analisis_WEB.Data;
 using CRM_Analisis_WEB.Data.Entidades;
 using CRM_Analisis_WEB.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -54,6 +55,7 @@ namespace CRM_Analisis_WEB
 
             services.AddTransient<SeedDb>();
             services.AddScoped<IUserHelper, UserHelper>();
+            services.AddTransient<IAuthorizationHandler, CustomRoleRequirementHandler>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

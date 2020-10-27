@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CRM_Analisis_WEB.Migrations
 {
-    public partial class CreateDB : Migration
+    public partial class CreateDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -92,19 +92,22 @@ namespace CRM_Analisis_WEB.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Document = table.Column<string>(maxLength: 20, nullable: false),
-                    FirstName = table.Column<string>(maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(maxLength: 50, nullable: false),
-                    Address = table.Column<string>(maxLength: 100, nullable: true),
+                    Documento = table.Column<string>(maxLength: 20, nullable: false),
+                    PrimerNombre = table.Column<string>(maxLength: 50, nullable: false),
+                    SegundoNombre = table.Column<string>(maxLength: 50, nullable: true),
+                    PrimerApellido = table.Column<string>(maxLength: 50, nullable: false),
+                    SegundoApellido = table.Column<string>(maxLength: 50, nullable: true),
+                    Direccion = table.Column<string>(maxLength: 250, nullable: false),
                     ImageId = table.Column<Guid>(nullable: false),
-                    RolId = table.Column<string>(nullable: true)
+                    rolId = table.Column<string>(nullable: true),
+                    estado = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_AspNetRoles_RolId",
-                        column: x => x.RolId,
+                        name: "FK_AspNetUsers_AspNetRoles_rolId",
+                        column: x => x.rolId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -122,18 +125,7 @@ namespace CRM_Analisis_WEB.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RolFuncionalidades", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RolFuncionalidades_Funcionalidades_funcionalidadId",
-                        column: x => x.funcionalidadId,
-                        principalTable: "Funcionalidades",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RolFuncionalidades_AspNetRoles_rolId",
-                        column: x => x.rolId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                   
                 });
 
             migrationBuilder.CreateTable(
@@ -187,7 +179,18 @@ namespace CRM_Analisis_WEB.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
-                   
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -250,9 +253,9 @@ namespace CRM_Analisis_WEB.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_RolId",
+                name: "IX_AspNetUsers_rolId",
                 table: "AspNetUsers",
-                column: "RolId");
+                column: "rolId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Funcionalidades_IdFuncionalidadId",

@@ -1,11 +1,19 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace CRM_Analisis_WEB.Data.Entidades
+namespace CRM_Analisis_WEB.Models
 {
-    public class User : IdentityUser
+    public class UserViewModel
     {
+        [Required]
+        public string Usuario { get; set; }
+
+        [Required]
+        public string Contrasenia { get; set; }
+
         [MaxLength(20)]
         [Required]
         public string Documento { get; set; }
@@ -30,18 +38,9 @@ namespace CRM_Analisis_WEB.Data.Entidades
 
         [Display(Name = "Imagen")]
         public Guid ImageId { get; set; }
-
-        //TODO: Pending to put the correct paths
-        [Display(Name = "Imagen")]
-        public string ImageFullPath => ImageId == Guid.Empty
-            ? $"https://localhost:44390/images/noimage.png"
-            : $"https://onsale.blob.core.windows.net/users/{ImageId}";
-
-        public Rol rol { get; set; }
+        [Required]
+        public string Idrol { get; set; }
+        [Required]
         public bool estado { get; set; }
-
-        public string FullName => $"{PrimerNombre} {SegundoNombre} {PrimerApellido} {SegundoApellido}";
-
     }
-
 }

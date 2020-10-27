@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRM_Analisis_WEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201020043931_CreateDB")]
-    partial class CreateDB
+    [Migration("20201024065416_CreateDatabase")]
+    partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -85,13 +85,14 @@ namespace CRM_Analisis_WEB.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("Address")
-                        .HasMaxLength(100);
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
-                    b.Property<string>("Document")
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.Property<string>("Documento")
                         .IsRequired()
                         .HasMaxLength(20);
 
@@ -100,15 +101,7 @@ namespace CRM_Analisis_WEB.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
                     b.Property<Guid>("ImageId");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50);
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -126,14 +119,30 @@ namespace CRM_Analisis_WEB.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<string>("RolId");
+                    b.Property<string>("PrimerApellido")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("PrimerNombre")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("SegundoApellido")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("SegundoNombre")
+                        .HasMaxLength(50);
 
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
+
+                    b.Property<bool>("estado");
+
+                    b.Property<string>("rolId");
 
                     b.HasKey("Id");
 
@@ -145,7 +154,7 @@ namespace CRM_Analisis_WEB.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("RolId");
+                    b.HasIndex("rolId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -299,9 +308,9 @@ namespace CRM_Analisis_WEB.Migrations
 
             modelBuilder.Entity("CRM_Analisis_WEB.Data.Entidades.User", b =>
                 {
-                    b.HasOne("CRM_Analisis_WEB.Data.Entidades.Rol", "Rol")
+                    b.HasOne("CRM_Analisis_WEB.Data.Entidades.Rol", "rol")
                         .WithMany()
-                        .HasForeignKey("RolId");
+                        .HasForeignKey("rolId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

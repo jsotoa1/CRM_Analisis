@@ -1,19 +1,82 @@
 ﻿
+@{
+    @using Newtonsoft.Json;
+    var listFunctionalities = JsonConvert.DeserializeObject<List<CRM_Analisis_WEB.Models.FuncionalidadViewModel>>(TempData["_ListaFuncionalidades"].ToString());
+}
+
+
 <div class="left-side-bar">
     <div class="brand-logo">
         <a href="@Url.Action("Home", "Dashboard")">
-            <img src="@Url.Content("~/Content/images/crm_Logo.png")" width="100" height="100"/>
+            <img src="@Url.Content("~/Content/images/crm_Logo.png")" width="100" height="100" />
         </a>
     </div>
     <div class="menu-block customscroll">
         <div class="sidebar-menu">
             <ul id="accordion-menu">
-                <li>
-                    <a asp-area="" asp-controller="MantRolFuncionalidad" asp-action="mantRolUsuarioFunc" class="dropdown-toggle no-arrow">
-                        <span class="fa fa-user"></span><span class="mtext">Mantenimiento Usuario</span>
-                    </a>
-                </li>
+                @*<li>
+            <a asp-area="" asp-controller="MantRolFuncionalidad" asp-action="mantRolUsuarioFunc" class="dropdown-toggle no-arrow">
+                <span class="fa fa-user"></span><span class="mtext">Mantenimiento Usuario</span>
+            </a>
+        </li>*@
+                @if (listFunctionalities != null)
+                {
+                    var firstLevelNodes = listFunctionalities.Where(x => x.IdFuncionalidad == 0).OrderBy(x => x.Orden);
+
+                    foreach (var firstLevelNode in firstLevelNodes)
+                    {
+                       
+                        var secondLevelNodes = listFunctionalities.Where(x => x.IdFuncionalidad == firstLevelNode.Id).OrderBy(x => x.Orden);
+                        
+
+                        if (secondLevelNodes.Count() == 0)
+                        {
+                            <li>
+                                <a href="@Url.Content(string.Concat("~/",firstLevelNode.Url))" class="dropdown-toggle no-arrow">
+                                    <span class="@firstLevelNode,Imagen"></span><span class="mtext">@firstLevelNode.NombreMenu</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="dropdown">
+                                <a href="javascript:;" class="dropdown-toggle">
+                                    <span class="@firstLevelNode.Imagen"></span><span class="mtext">@firstLevelNode.NombreMenu</span>
+                                </a>
+                                <ul class="submenu">
+                                    @foreach (var secondLevelNode in secondLevelNodes)
+                                    {
+                                        var thirdLevelNodes = listFunctionalities.Where(x => x.IdFuncionalidad == secondLevelNode.Id).OrderBy(x => x.Orden);
+                                        if (thirdLevelNodes.Count() == 0)
+                                        {
+                                            <li><a href="@Url.Content(string.Concat("~/",secondLevelNode.Url))">@secondLevelNode.NombreMenu</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="dropdown">
+                                                <a href="javascript:;" class="dropdown-toggle">
+                                                    <span class="@secondLevelNode.Imagen"></span><span class="mtext">@secondLevelNode.NombreMenu</span>
+                                                </a>
+                                                <ul class="submenu child">
+                                                    @foreach (var thirdLevelNode in thirdLevelNodes)
+                                                    {
+                                                        <li><a href="@Url.Content(string.Concat("~/",thirdLevelNode.Url))">@thirdLevelNode.NombreMenu</a></li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    }
+
+
+                }
             </ul>
         </div>
     </div>
 </div>
+@{ 
+    TempData["_ListaFuncionalidades"] = JsonConvert.SerializeObject(listFunctionalities);
+}

@@ -21,10 +21,9 @@ namespace CRM_Analisis_WEB.Data
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
-            await CheckRolesAsync("Administrador", "Acceso a todo", true);
-            await CheckRolesAsync("Mensajero", "Solo area de mensajes", true);
+            await CheckRolesAsync("Administrador", "Solo area de mensajes", true);
 
-            var rol = new Rol { Name = "Administrador" };
+            Rol rol = new Rol { Name = "Administrador" };
             await CheckUserAsync("12345", "José", "Soto", "jsotoa1@miumg.edu.gt", "322 311 4620", "Calle Luna Calle Sol", rol);
         }
 
@@ -54,14 +53,14 @@ namespace CRM_Analisis_WEB.Data
             {
                 user = new User
                 {
-                    FirstName = firstName,
-                    LastName = lastName,
+                    PrimerNombre = firstName,
+                    PrimerApellido = lastName,
                     Email = email,
                     UserName = email,
                     PhoneNumber = phone,
-                    Address = address,
-                    Document = document,
-                    Rol = rol
+                    Direccion = address,
+                    Documento = document,
+                    rol = rol
                 };
 
                 await _userHelper.AddUserAsync(user, "123456");

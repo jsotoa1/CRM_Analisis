@@ -1,30 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CRM_Analisis_WEB.Data;
+﻿using CRM_Analisis_WEB.Data;
 using CRM_Analisis_WEB.Data.Entidades;
 using CRM_Analisis_WEB.Helpers;
 using CRM_Analisis_WEB.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CRM_Analisis_WEB.Controllers
 {
-
+    [Authorize(Roles="Administrador")]
     public class MantRolFuncionalidadController : Controller
     {
         private readonly DataContext _dataContext;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<User> _userManager;
         private readonly IUserHelper _userHelper;
 
-        public MantRolFuncionalidadController(DataContext dataContext, 
-            RoleManager<IdentityRole> roleManager,
-            IUserHelper userHelper)
+        public MantRolFuncionalidadController(DataContext dataContext,
+               RoleManager<IdentityRole> roleManager,
+               UserManager<User> userManager,
+               IUserHelper userHelper)
         {
             _dataContext = dataContext;
             _roleManager = roleManager;
+            _userManager = userManager;
             _userHelper = userHelper;
         }
         public ActionResult mantRolUsuarioFunc()
@@ -34,18 +38,18 @@ namespace CRM_Analisis_WEB.Controllers
         }
 
 
-            #region Funcionalidad
+        #region Funcionalidad
 
-       [HttpPost]
+        [HttpPost]
         public JsonResult ObtenerFuncionalidades()
         {
-            var valoresFuncionalidad = new List<Funcionalidad>();
+            List<Funcionalidad> valoresFuncionalidad = new List<Funcionalidad>();
 
             try
             {
                 valoresFuncionalidad = _dataContext.Funcionalidades.ToList();
             }
-            catch(Exception)
+            catch (Exception)
             {
 
             }
@@ -55,7 +59,7 @@ namespace CRM_Analisis_WEB.Controllers
         [HttpPost]
         public JsonResult recuperarFuncionalidad()
         {
-            var valoresFuncionalidad = new List<Funcionalidad>();
+            List<Funcionalidad> valoresFuncionalidad = new List<Funcionalidad>();
 
             try
             {
@@ -64,7 +68,7 @@ namespace CRM_Analisis_WEB.Controllers
                                        .Where(f => f.Estado == true)
                                        .ToList();
             }
-            catch (Exception )
+            catch (Exception)
             {
 
             }
@@ -105,14 +109,16 @@ namespace CRM_Analisis_WEB.Controllers
                     _dataContext.SaveChanges();
                     guardarCambiosRespuesta.Response = true;
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     guardarCambiosRespuesta.Response = false;
                 }
                 return Json(guardarCambiosRespuesta, new Newtonsoft.Json.JsonSerializerSettings());
             }
             else
+            {
                 return Json(new { Response = false, Message = "los datos ingresados son incorrectos o inválidos, por favor intente mas tarde." }, new Newtonsoft.Json.JsonSerializerSettings());
+            }
         }
 
 
@@ -123,7 +129,7 @@ namespace CRM_Analisis_WEB.Controllers
         [HttpPost]
         public JsonResult ObtenerRol()
         {
-            var valoresRol = new List<IdentityRole>();
+            List<IdentityRole> valoresRol = new List<IdentityRole>();
 
             try
             {
@@ -147,7 +153,7 @@ namespace CRM_Analisis_WEB.Controllers
                     await _userHelper.AddRoleAsync(varRol);
                     guardarCambiosRespuesta.Response = true;
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     guardarCambiosRespuesta.Response = false;
                 }
@@ -162,7 +168,7 @@ namespace CRM_Analisis_WEB.Controllers
 
         public JsonResult obtenerFunct(string Id)
         {
-            
+
             List<treeView> result = new List<treeView>();
 
             try
@@ -173,13 +179,12 @@ namespace CRM_Analisis_WEB.Controllers
             {
 
             }
-            
+
             return Json(result, new Newtonsoft.Json.JsonSerializerSettings());
         }
 
         public List<treeView> ObtenerNodosFuncRol(string id)
         {
-            List<Funcionalidad> ValoresFuncionalidad = new List<Funcionalidad>();
             List<permisosFuncionalidad> permisosFuncionalidades = new List<permisosFuncionalidad>();
             List<RolFuncionalidad> rolFuncionalidades = new List<RolFuncionalidad>();
 
@@ -189,42 +194,21 @@ namespace CRM_Analisis_WEB.Controllers
 
             try
             {
-                rolFuncionalidades = _dataContext.RolFuncionalidades
-                                    .Include(f => f.funcionalidad)
-                                    .Include(r=> r.rol)
-                                    .ToList();
+                permisosFuncionalidades = PermisosFuncionalidad(id);
 
-
-
-                ValoresFuncionalidad = _dataContext.Funcionalidades.ToList();
-
-
-                foreach (var itemfuncionalidades in ValoresFuncionalidad)
-                {
-                    permisosFuncionalidades.Add(new permisosFuncionalidad
-                    {
-                        Id = itemfuncionalidades.Id,
-                        Descripcion = itemfuncionalidades.Descripcion,
-                        IdFuncionalidad = itemfuncionalidades.IdFuncionalidad == null ? 0 : itemfuncionalidades.IdFuncionalidad.Id,
-                        Permiso = 0,
-                        Hijos = _dataContext.Funcionalidades.Where(f => f.IdFuncionalidad.Id == itemfuncionalidades.Id).Count(),
-                        NomreMenu = itemfuncionalidades.NombreMenu
-                    });
-                }
-
-                foreach (var item in permisosFuncionalidades)
+                foreach (permisosFuncionalidad item in permisosFuncionalidades)
                 {
                     resultChildren = new List<treeView>();
                     resultChildren2 = new List<treeView>();
                     if (item.Hijos > 0)
                     {
-                        foreach (var itemHijos in permisosFuncionalidades)
+                        foreach (permisosFuncionalidad itemHijos in permisosFuncionalidades)
                         {
                             if (item.Id == itemHijos.IdFuncionalidad)
                             {
                                 if (itemHijos.Hijos > 0)
                                 {
-                                    foreach (var itemHijos2 in permisosFuncionalidades)
+                                    foreach (permisosFuncionalidad itemHijos2 in permisosFuncionalidades)
                                     {
                                         if (itemHijos.Id == itemHijos2.IdFuncionalidad)
                                         {
@@ -280,8 +264,38 @@ namespace CRM_Analisis_WEB.Controllers
 
         }
 
+        public List<permisosFuncionalidad> PermisosFuncionalidad(string id)
+        {
+            List<Funcionalidad> ValoresFuncionalidad = new List<Funcionalidad>();
+            List<permisosFuncionalidad> permisosFuncionalidades = new List<permisosFuncionalidad>();
+
+            try
+            {
+                ValoresFuncionalidad = _dataContext.Funcionalidades.ToList();
+
+
+                foreach (Funcionalidad itemfuncionalidades in ValoresFuncionalidad)
+                {
+                    permisosFuncionalidades.Add(new permisosFuncionalidad
+                    {
+                        Id = itemfuncionalidades.Id,
+                        Descripcion = itemfuncionalidades.Descripcion,
+                        IdFuncionalidad = itemfuncionalidades.IdFuncionalidad == null ? 0 : itemfuncionalidades.IdFuncionalidad.Id,
+                        Permiso = _dataContext.RolFuncionalidades.Where(m => m.rol.Id == id).Where(m => m.funcionalidad.Id == itemfuncionalidades.Id).Count(),
+                        Hijos = _dataContext.Funcionalidades.Where(f => f.IdFuncionalidad.Id == itemfuncionalidades.Id).Count(),
+                        NomreMenu = itemfuncionalidades.NombreMenu
+                    });
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return permisosFuncionalidades;
+        }
+
         [HttpPost]
-        public  async Task<JsonResult> SaveCheckedNodes(List<int> checkedIds, string idRol)
+        public async Task<JsonResult> SaveCheckedNodes(List<int> checkedIds, string idRol)
         {
             RespuestaViewModel resp = new RespuestaViewModel();
 
@@ -299,16 +313,16 @@ namespace CRM_Analisis_WEB.Controllers
 
 
                     result = ObtenerNodosFuncRol(idRol);
-  
+
                     List<int> checkedIdsTemp = new List<int>();
 
                     checkedIdsTemp.AddRange(checkedIds);
 
-                    foreach (var padre in result.ToList())
+                    foreach (treeView padre in result.ToList())
                     {
-                        foreach (var hijo in padre.children)
+                        foreach (treeView hijo in padre.children)
                         {
-                            foreach (var ids in checkedIdsTemp)
+                            foreach (int ids in checkedIdsTemp)
                             {
                                 if (hijo.id == ids)
                                 {
@@ -335,18 +349,25 @@ namespace CRM_Analisis_WEB.Controllers
                 try
                 {
                     List<int> idsTabla = new List<int>();
+                    List<permisosFuncionalidad> permisosFuncionalidades = new List<permisosFuncionalidad>();
 
+                    permisosFuncionalidades = PermisosFuncionalidad(idRol).Where(x => x.Permiso > 0).ToList();
 
-                    foreach (var item in varRolFunc.ids)
+                    foreach (permisosFuncionalidad item in permisosFuncionalidades)
+                    {
+                        idsTabla.Add(item.Id);
+                    }
+
+                    foreach (int item in varRolFunc.ids)
                     {
                         if (!idsTabla.Contains(item))
                         {
-                            
 
-                            var rolFuncionalidad = new RolFuncionalidad
+
+                            RolFuncionalidad rolFuncionalidad = new RolFuncionalidad
                             {
-                                 funcionalidad = _dataContext.Funcionalidades.Find(item),
-                                 rol = await _roleManager.FindByIdAsync(varRolFunc.idRol.ToString())
+                                funcionalidad = _dataContext.Funcionalidades.Find(item),
+                                rol = await _roleManager.FindByIdAsync(varRolFunc.idRol.ToString())
                             };
 
                             _dataContext.RolFuncionalidades.Add(rolFuncionalidad);
@@ -354,14 +375,25 @@ namespace CRM_Analisis_WEB.Controllers
                         }
                     }
 
+                    foreach (permisosFuncionalidad item in permisosFuncionalidades)
+                    {
+                        if (!varRolFunc.ids.Contains(item.Id))
+                        {
+                            RolFuncionalidad rolFuncionalidad = _dataContext.RolFuncionalidades.FirstOrDefault(r => r.rol.Id == idRol && r.funcionalidad.Id == item.Id);
+
+                            _dataContext.RolFuncionalidades.Remove(rolFuncionalidad);
+                            _dataContext.SaveChanges();
+                        }
+                    }
+
                     resp.Response = true;
 
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     resp.Response = false;
                 }
-                return this.Json(resp.Response);
+                return Json(resp.Response);
             }
             else
             {
@@ -372,6 +404,76 @@ namespace CRM_Analisis_WEB.Controllers
         #endregion
 
         #region Usuario
+
+        [HttpPost]
+        public JsonResult ObtenerUsuarios()
+        {
+            List<User> valoresUser = new List<User>();
+
+            try
+            {
+                valoresUser = _userManager.Users
+                    .Include(m => m.rol)
+                    .ToList();
+            }
+            catch (Exception)
+            {
+
+            }
+            return Json(valoresUser, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CrearUsuario(UserViewModel model)
+        {
+            RespuestaViewModel resp = new RespuestaViewModel();
+            if (ModelState.IsValid)
+            {
+                var rolI = await _roleManager.Roles.FirstOrDefaultAsync(m => m.Id == model.Idrol);
+                Rol rol = new Rol
+                {
+                 Id = rolI.Id,
+                 Name = rolI.Name,
+                 ConcurrencyStamp = rolI.ConcurrencyStamp,
+                 NormalizedName = rolI.NormalizedName
+                };
+
+                User useradd = new User
+                {
+                   UserName = model.Usuario,
+                   Email = model.Usuario,
+                   Documento = model.Documento,
+                   PrimerNombre = model.PrimerNombre,
+                   SegundoNombre = model.SegundoNombre,
+                   PrimerApellido = model.PrimerApellido,
+                   SegundoApellido = model.SegundoApellido,
+                   Direccion = model.Direccion,
+                   rol = rol,
+                   estado = model.estado
+                };
+
+                User user = await _userHelper.GetUserAsync(model.Usuario);
+
+                if(user == null)
+                {
+                IdentityResult result =  await _userHelper.AddUserAsync(useradd, model.Contrasenia);
+                   if(result.Succeeded)
+                    {
+                        
+                        await _userHelper.AddUserToRoleAsync(useradd, rol.Name);
+                        resp.Response = result.Succeeded;
+
+                        return Json(resp, new Newtonsoft.Json.JsonSerializerSettings());
+                    }
+                    else
+                    {
+                        return Json(new { Response = false, Message = result.Errors }, new Newtonsoft.Json.JsonSerializerSettings());
+                    }
+                }
+            }
+
+            return Json(new { Response = false, Message = "los datos ingresados son incorrectos o inválidos, por favor intente mas tarde." }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
 
         #endregion
 
