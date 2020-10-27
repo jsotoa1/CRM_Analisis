@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CRM_Analisis_WEB.Controllers
 {
-    [Authorize(Roles="Administrador")]
+  
     public class MantRolFuncionalidadController : Controller
     {
         private readonly DataContext _dataContext;
