@@ -18,6 +18,7 @@ namespace CRM_Analisis_WEB.Data
         public DbSet<RolFuncionalidad> RolFuncionalidades { get; set; }
         public DbSet<TipoCliente> TipoClientes { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
+
         public DbSet<Categoria_Producto> Categorias { get; set; }
         public DbSet<Producto> Productos { get; set; }
 
@@ -26,10 +27,13 @@ namespace CRM_Analisis_WEB.Data
         public DbSet<Tipo_Promocion_Anuncios> Tipo_Promocion_Anuncios { get; set; }
         public DbSet<Tipo_Edad_Anuncios> Tipo_Edad_Anuncios { get; set; }
         public DbSet<Anuncio> Anuncios { get; set; }
+
         public DbSet<Nivel_Control> Nivel_Controles { get; set; }
         public DbSet<Plan_Accion> Plan_Acciones { get; set; }
+
         public DbSet<Tipo_Accion> Tipo_Acciones { get; set; }
         public DbSet<Tipo_Estado> Tipo_Estados { get; set; }
+        public DbSet<Campania> campanias { get; set; }
 
         //Walter
         public DbSet<Prioridad_Agenda> Prioridad_Agendas { get; set; }
