@@ -1,5 +1,6 @@
 ﻿using CRM_Analisis_WEB.Data.Entidades;
 using CRM_Analisis_WEB.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,14 @@ namespace CRM_Analisis_WEB.Data
             await _context.Database.EnsureCreatedAsync();
             await CheckRolesAsync("Administrador", "Solo area de mensajes", true);
 
-            Rol rol = new Rol { Name = "Administrador" };
+            var rolI =  _context.Roles.FirstOrDefault(r => r.Name == "Administrador");
+            Rol rol = new Rol
+            {
+                Id = rolI.Id,
+                Name = rolI.Name,
+                ConcurrencyStamp = rolI.ConcurrencyStamp,
+                NormalizedName = rolI.NormalizedName
+            };
             await CheckUserAsync("12345", "José", "Soto", "jsotoa1@miumg.edu.gt", "322 311 4620", "Calle Luna Calle Sol", rol);
         }
 
