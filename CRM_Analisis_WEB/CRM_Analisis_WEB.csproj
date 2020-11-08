@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>44fec147-7f52-438f-b8cb-956b3c2055e5</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -1509,8 +1510,8 @@
     <None Include="wwwroot\Content\images\upload-file-img.jpg" />
     <None Include="wwwroot\Content\jquery.mask.js" />
     <None Include="wwwroot\Content\jquery.steps.css" />
-    <None Include="wwwroot\Content\Plantilla\Contrato Etiquetas.pdf" />
-    <None Include="wwwroot\Content\Plantilla\Contrato Lleno.pdf" />
+    <None Include="wwwroot\Content\Plantilla\ContratoEtiquetas.pdf" />
+    <None Include="wwwroot\Content\Plantilla\ContratoLleno.pdf" />
     <None Include="wwwroot\Content\Plantilla\FORMATO ACTUAL EN BLANCO.docx" />
     <None Include="wwwroot\Content\styles\chosen.css" />
     <None Include="wwwroot\Content\styles\pageStyles.css" />
@@ -1579,6 +1580,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.AzureKeyVault.HostingStartup" Version="2.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />

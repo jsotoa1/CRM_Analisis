@@ -1,0 +1,357 @@
+﻿
+@{
+    ViewData["Title"] = "GestionClientes";
+}
+<link rel="stylesheet" href="~/Content/DataTable/bootstrap.css" />
+<link rel="stylesheet" href="~/Content/DataTable/dataTables.bootstrap4.min.css" />
+<link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
+<link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
+<link rel="stylesheet" href="~/Content/styles/pageStyles.css" />
+
+<script src="~/Scripts/metodos/customAlert.js"></script>
+<script src="~/Scripts/metodos/generarTablas.js"></script>
+<script src="~/Content/DataTable/jquery.dataTables.min.js"></script>
+<script src="~/Content/DataTable/dataTables.bootstrap4.min.js"></script>
+<script src="~/Scripts/gijgo/gijgo.min.js"></script>
+<script src="~/Scripts/jquery-validate/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/Clientes/Clientes.js"></script>
+
+<style type="text/css">
+    .modal-lg {
+        max-width: 99% !important;
+    }
+
+    .modal-body {
+        max-height: calc(100vh - 145px);
+        overflow-y: auto;
+    }
+
+    .row {
+        margin: 10px;
+    }
+
+    .tablaObjeto {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 100%;
+    }
+
+    .modalRoll {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 495px;
+    }
+
+    #item-lb {
+        text-align: left;
+        margin-top: 0.5em;
+        padding: 6px;
+        color: darkslategrey;
+        font-size: 17px;
+    }
+</style>
+<script type="text/javascript">
+
+    var rootPath = window.location.origin;
+    var arrayCliente = ["Cliente_ID", "Nombre",
+        "Razon_Zocial", "NIT", "Direccion", "PBX", "FAX", "Email", "Pagina_Web", "Descripcion", "tipoCliente", "Operaciones"];
+
+
+    $(document).ready(function () {
+        generarTabla();
+    });
+
+
+
+       //function mayus(e) {
+       //     e.value = e.value.toUpperCase();
+       // }
+
+</script>
+
+<div class="container-fluid">
+    <div class="tab-pane fade show active" id="funcionalidad" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
+            <br />
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-xl-12">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12">
+                            <div class="pull-left">
+                                <h1 class="text-blue">Gestión de Clientes</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="divPromotions" class="col-sm-2 col-md-2 col-xl-8">
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-xl-2 pull-right">
+
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-xl-2 pull-right">
+                            @*<a target="_blank" href="@Url.Action("ExporttoExcel", "GestionRutas")" style="padding:6px" class="btn btn-success btn-block active" id="exportExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar</a>*@
+                            <button id="btnProducto" type="button" class="btn btn-primary btn-block active btn-sec" data-toggle="modal" data-target="#modalCrearCliente">Crear Cliente</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row tablaObjeto" id="contTable">
+
+            </div>
+        </div>
+    </div>
+</div>
+@*-----------MODAL CREAR CLIENTE-------------*@
+<div class="modal fade modal-lg" id="modalCrearCliente" tabindex="-1" role="dialog" aria-labelledby="CrearClienteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CrearClienteModalLabel">Cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formCrearCliente" class="validarCliente" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Nombre de Cliente:</h5>
+                            <input type="text" class="form-control" placeholder="Nombre" id="funcNombre" data-required="true" required
+                                   maxlength="50">
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Nombre de Cliente es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Razó Social:</h5>
+                            <input type="text" class="form-control" placeholder="RazonSocial" id="funcRazonSocial" data-required="true" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Razon Social es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>NIT:</h5>
+                            <input type="text" class="form-control" placeholder="NIT" id="funcNIT" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">NIT es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Dirección Cliente:</h5>
+                            <input type="text" class="form-control" placeholder="Direccion" id="funcDireccion" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Direccion es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>PBX:</h5>
+                            <input type="text" class="form-control" placeholder="PBX" id="funcPBX" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">PBX es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>FAX:</h5>
+                            <input type="text" class="form-control" placeholder="FAX" id="funcFAX" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">FAX es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Email:</h5>
+                            <input type="text" class="form-control" placeholder="Email" id="funcEmail" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Email es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Direccion de Pagina Web:</h5>
+                            <input type="text" class="form-control" placeholder="PaginaWeb" id="funcPaginaWeb" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Direccion de Pagina Web es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Descripción:</h5>
+                            <input type="text" class="form-control" placeholder="Descripcion" id="funcDescripcion" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Descripcion es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Tipo Cliente:</h5>
+                            <select class="form-control" id="selectTipoCliente" required>
+                                <option value="" disabled selected>Seleccione TipoCliente.</option>
+                                @if (ViewBag.tipoClientes != null)
+                                {
+                                    foreach (var item in ViewBag.tipoClientes)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Nombre</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@*-----------MODAL EDITAR CLIENTE-------------*@
+<div class="modal fade modal-lg" id="modalEditCliente" tabindex="-1" role="dialog" aria-labelledby="EditarClienteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CrearClienteModalLabel">Cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formEditCliente" class="validarCliente" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Nombre de Cliente:</h5>
+                            <input type="text" class="form-control" placeholder="Nombre" id="funcNombreEdit" data-required="true" required
+                                   maxlength="50">
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Nombre de Cliente es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Razó Social:</h5>
+                            <input type="text" class="form-control" placeholder="RazonSocial" id="funcRazonSocialEdit" data-required="true" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Razon Social es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>NIT:</h5>
+                            <input type="text" class="form-control" placeholder="NIT" id="funcNITEdit" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">NIT es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Dirección Cliente:</h5>
+                            <input type="text" class="form-control" placeholder="Direccion" id="funcDireccionEdit" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Direccion es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>PBX:</h5>
+                            <input type="text" class="form-control" placeholder="PBX" id="funcPBXEdit" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">PBX es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>FAX:</h5>
+                            <input type="text" class="form-control" placeholder="FAX" id="funcFAXEdit" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">FAX es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Email:</h5>
+                            <input type="text" class="form-control" placeholder="Email" id="funcEmailEdit" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Email es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Direccion de Pagina Web:</h5>
+                            <input type="text" class="form-control" placeholder="PaginaWeb" id="funcPaginaWebEdit" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Direccion de Pagina Web es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Descripción:</h5>
+                            <input type="text" class="form-control" placeholder="Descripcion" id="funcDescripcionEdit" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Descripcion es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Tipo Cliente:</h5>
+                            <select class="form-control" id="selectTipoClienteEdit" required>
+                                <option value="" disabled selected>Seleccione TipoCliente.</option>
+                                @if (ViewBag.tipoClientes != null)
+                                {
+                                    foreach (var item in ViewBag.tipoClientes)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Nombre</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

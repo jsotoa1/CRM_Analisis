@@ -1,0 +1,343 @@
+﻿
+@{
+    ViewData["Title"] = "Marketing";
+}
+
+<link rel="stylesheet" href="~/Content/DataTable/bootstrap.css" />
+<link rel="stylesheet" href="~/Content/DataTable/dataTables.bootstrap4.min.css" />
+<link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
+<link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
+<link rel="stylesheet" href="~/Content/styles/pageStyles.css" />
+
+<script src="~/Scripts/metodos/customAlert.js"></script>
+<script src="~/Scripts/metodos/generarTablas.js"></script>
+<script src="~/Content/DataTable/jquery.dataTables.min.js"></script>
+<script src="~/Content/DataTable/dataTables.bootstrap4.min.js"></script>
+<script src="~/Scripts/gijgo/gijgo.min.js"></script>
+<script src="~/Scripts/jquery-validate/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/Anuncios/Anuncios.js"></script>
+
+<style type="text/css">
+    .modal-lg {
+        max-width: 99% !important;
+    }
+
+    .modal-body {
+        max-height: calc(100vh - 145px);
+        overflow-y: auto;
+    }
+
+    .row {
+        margin: 10px;
+    }
+
+    .tablaObjeto {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 100%;
+    }
+
+    .modalRoll {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 495px;
+    }
+
+    #item-lb {
+        text-align: left;
+        margin-top: 0.5em;
+        padding: 6px;
+        color: darkslategrey;
+        font-size: 17px;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var rootPath = window.location.origin;
+    var arrayAnuncio = ["Anuncio_ID", "Encabezado",
+        "Descripción", "Punto de Venta", "Precio", "Producto", "Tipo Edad", "Tipo Promocion", "Tipo Categoria", "Operaciones"];
+
+    $(document).ready(function () {
+        generarTabla();
+    });
+
+
+
+       //function mayus(e) {
+       //     e.value = e.value.toUpperCase();
+       // }
+
+</script>
+
+<div class="container-fluid">
+    <div class="tab-pane fade show active" id="funcionalidad" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
+            <br />
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-xl-12">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12">
+                            <div class="pull-left">
+                                <h1 class="text-blue">Mantenimiento de Anuncios</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="divPromotions" class="col-sm-2 col-md-2 col-xl-8">
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-xl-2 pull-right">
+
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-xl-2 pull-right">
+                            @*<a target="_blank" href="@Url.Action("ExporttoExcel", "GestionRutas")" style="padding:6px" class="btn btn-success btn-block active" id="exportExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar</a>*@
+                            <button id="btnFuncionalidad" type="button" class="btn btn-primary btn-block active btn-sec" data-toggle="modal" data-target="#modalCrearAnuncio">Crear Anuncio</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row tablaObjeto" id="contTable">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*-----------MODAL CREAR ANUNCIO-------------*@
+<div class="modal fade modal-lg" id="modalCrearAnuncio" tabindex="-1" role="dialog" aria-labelledby="CrearAnuncioModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CrearAnuncioModalLabel">Anuncio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formCrearAnuncio" class="validarAnuncio" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Encabezado:</h5>
+                            <input type="text" class="form-control" placeholder="Encabezado" id="funcEncabezado" data-required="true" required
+                                   maxlength="50">
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Encabezado es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Descripción:</h5>
+                            <input type="text" class="form-control" placeholder="Descripción" id="funcDescripcion" data-required="true">
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Punto de Venta:</h5>
+                            <input type="text" class="form-control" placeholder="Punto de Venta" id="funcPuntoVenta" required maxlength="50">
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Punto de Venta es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Precio:</h5>
+                            <input type="number" class="form-control" placeholder="Precio" id="funcPrecio" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Precio es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Producto:</h5>
+                            <select class="form-control" id="selectProducto" required>
+                                <option value="" disabled selected>Seleccione Producto.</option>
+                                @if (ViewBag.list_Producto != null)
+                                {
+                                    foreach (var item in ViewBag.list_Producto)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Nombre</option>
+                                    }
+                                }
+                            </select>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Producto es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Tipo de Edad:</h5>
+                            <select class="form-control" id="selectTipoEdad" required>
+                                <option value="" disabled selected>Seleccione Tipo de Edad.</option>
+                                @if (ViewBag.tipo_Edad != null)
+                                {
+                                    foreach (var item in ViewBag.tipo_Edad)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Tipo de Promoción:</h5>
+                            <select class="form-control" id="selectTipoPromocion" required>
+                                <option value="" disabled selected>Seleccione Tipo de Promocion.</option>
+                                @if (ViewBag.tipo_Promocion != null)
+                                {
+                                    foreach (var item in ViewBag.tipo_Promocion)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Tipo de Categoria:</h5>
+                            <select class="form-control" id="selectTipoCategoria" required>
+                                <option value="" disabled selected>Seleccione Tipo de Categoria.</option>
+                                @if (ViewBag.tipo_Categoria != null)
+                                {
+                                    foreach (var item in ViewBag.tipo_Categoria)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@*-----------MODAL EDITAR ANUNCIO-------------*@
+<div class="modal fade modal-lg" id="modalEditAnuncio" tabindex="-1" role="dialog" aria-labelledby="EditarAnuncioModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CrearAnuncioModalLabel">Anuncio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formEditAnuncio" class="validarAnuncio" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Encabezado:</h5>
+                            <input type="text" class="form-control" placeholder="Encabezado" id="funcEncabezadoEdit" data-required="true" required
+                                   maxlength="50">
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Encabezado es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Descripción:</h5>
+                            <input type="text" class="form-control" placeholder="Descripción" id="funcDescripcionEdit" data-required="true">
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Punto de Venta:</h5>
+                            <input type="text" class="form-control" placeholder="Punto de Venta" id="funcPuntoVentaEdit" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Punto de Venta es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Precio:</h5>
+                            <input type="number" class="form-control" placeholder="Precio" id="funcPrecioEdit" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Precio es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Producto:</h5>
+                            <select class="form-control" id="selectProductoEdit" required>
+                                <option value="" disabled selected>Seleccione Producto.</option>
+                                @if (ViewBag.list_Producto != null)
+                                {
+                                    foreach (var item in ViewBag.list_Producto)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Nombre</option>
+                                    }
+                                }
+                            </select>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Producto es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Tipo de Edad:</h5>
+                            <select class="form-control" id="selectTipoEdadEdit" required>
+                                <option value="" disabled selected>Seleccione Tipo de Edad.</option>
+                                @if (ViewBag.tipo_Edad != null)
+                                {
+                                    foreach (var item in ViewBag.tipo_Edad)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Tipo de Promoción:</h5>
+                            <select class="form-control" id="selectTipoPromocionEdit" required>
+                                <option value="" disabled selected>Seleccione Tipo de Promocion.</option>
+                                @if (ViewBag.tipo_Promocion != null)
+                                {
+                                    foreach (var item in ViewBag.tipo_Promocion)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Tipo de Categoria:</h5>
+                            <select class="form-control" id="selectTipoCategoriaEdit" required>
+                                <option value="" disabled selected>Seleccione Tipo de Categoria.</option>
+                                @if (ViewBag.tipo_Categoria != null)
+                                {
+                                    foreach (var item in ViewBag.tipo_Categoria)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

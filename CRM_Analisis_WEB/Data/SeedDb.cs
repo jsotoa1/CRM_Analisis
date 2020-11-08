@@ -22,7 +22,7 @@ namespace CRM_Analisis_WEB.Data
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
-            await CheckRolesAsync("Administrador", "Solo area de mensajes", true);
+            await CheckRolesAsync("Administrador", "", true);
 
             var rolI =  _context.Roles.FirstOrDefault(r => r.Name == "Administrador");
             Rol rol = new Rol

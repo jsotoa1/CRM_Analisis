@@ -40,6 +40,14 @@ namespace CRM_Analisis_WEB.Data
         public DbSet<Quejas> Quejas { get; set; }
         public DbSet<Agenda_Quejas> Agenda_Quejas { get; set; }
 
+        //Ordenes
+        public DbSet<OrdenVenta> OrdenVentas { get; set; }
+        public DbSet<OrdenEstado> OrdenEstados { get; set; }
+        public DbSet<MetodoPago> MetodoPagos { get; set; }
+        public DbSet<DetalleOrdenVenta> DetalleOrdenVentas { get; set; }
+        public DbSet<Direccion_Entrega> direccion_Entregas { get; set; }
+        public DbSet<Municipio> Municipios { get; set; }
+        public DbSet<Departamento> Departamentos { get; set; }
 
     }
 }

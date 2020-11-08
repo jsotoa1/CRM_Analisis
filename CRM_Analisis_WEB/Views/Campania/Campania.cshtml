@@ -1,8 +1,7 @@
 ﻿
 @{
-    ViewData["Title"] = "Productos";
+    ViewData["Title"] = "Campania";
 }
-
 <link rel="stylesheet" href="~/Content/DataTable/bootstrap.css" />
 <link rel="stylesheet" href="~/Content/DataTable/dataTables.bootstrap4.min.css" />
 <link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
@@ -14,10 +13,9 @@
 <script src="~/Content/DataTable/jquery.dataTables.min.js"></script>
 <script src="~/Content/DataTable/dataTables.bootstrap4.min.js"></script>
 <script src="~/Scripts/gijgo/gijgo.min.js"></script>
-<script src="~/Scripts/jquery.mask.min.js"></script>
 <script src="~/Scripts/jquery-validate/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/Scripts/Productos/Productos.js"></script>
+<script src="~/Scripts/Campania/Campania.js"></script>
 
 <style type="text/css">
     .modal-lg {
@@ -29,10 +27,10 @@
         overflow-y: auto;
     }
 
-    .row { 
+    .row {
         margin: 10px;
     }
-    
+
     .tablaObjeto {
         overflow-x: auto;
         overflow-y: auto;
@@ -57,17 +55,11 @@
 <script type="text/javascript">
 
     var rootPath = window.location.origin;
-    var arrayProducto = ["Producto_ID", "Nombre",
-        "Descripción", "Precio", "Cantidad", "Categoría", "Estado", "Operaciones"];
-
+    var arrayCampania = ["Campania_ID", "Nombre",
+        "Porcentaje", "Tipo Estado", "Tipo Accion", "Operaciones"];
 
     $(document).ready(function () {
         generarTabla();
-
-        $('.money').mask('#,##0.00', { reverse: true });
-        $('.phone').mask('0000-0000');
-        $('.identificacion').mask('0000-0000-00000');
-
     });
 
 
@@ -87,7 +79,7 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-xl-12">
                             <div class="pull-left">
-                                <h1 class="text-blue">Mantenimiento de Productos</h1>
+                                <h1 class="text-blue">Mantenimiento de Campaña</h1>
                             </div>
                         </div>
                     </div>
@@ -100,11 +92,11 @@
                         <div id="divPromotions" class="col-sm-2 col-md-2 col-xl-8">
                         </div>
                         <div class="col-sm-2 col-md-2 col-xl-2 pull-right">
-                           
+
                         </div>
                         <div class="col-sm-2 col-md-2 col-xl-2 pull-right">
                             @*<a target="_blank" href="@Url.Action("ExporttoExcel", "GestionRutas")" style="padding:6px" class="btn btn-success btn-block active" id="exportExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar</a>*@
-                            <button id="btnProducto" type="button" class="btn btn-primary btn-block active btn-sec" data-toggle="modal" data-target="#modalCrearProducto">Crear Producto</button>
+                            <button id="btnFuncionalidad" type="button" class="btn btn-primary btn-block active btn-sec" data-toggle="modal" data-target="#modalCrearCampania">Crear Campaña</button>
                         </div>
                     </div>
                 </div>
@@ -115,18 +107,17 @@
         </div>
     </div>
 </div>
-
-@*-----------MODAL CREAR PRODUCTO-------------*@
-<div class="modal fade modal-lg" id="modalCrearProducto" tabindex="-1" role="dialog" aria-labelledby="CrearProductoModalLabel" aria-hidden="true">
+@*-----------MODAL CREAR CAMPANIA-------------*@
+<div class="modal fade modal-lg" id="modalCrearCampania" tabindex="-1" role="dialog" aria-labelledby="CrearCampaniaModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="CrearProductoModalLabel">Producto</h5>
+                <h5 class="modal-title" id="CrearCampaniaModalLabel">Campaña</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="formCrearProducto" class="validarProducto" novalidate>
+            <form id="formCrearCampania" class="validarCampania" novalidate>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-12 col-md-6 col-xl-3">
@@ -135,57 +126,41 @@
                                    maxlength="50">
                             <div class="invalid-feedback">
                                 <div class="form-group has-danger">
-                                    <div class="form-control-feedback">Producto es requerido</div>
+                                    <div class="form-control-feedback">Nombre es requerido</div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6 col-xl-3">
-                            <h5>Descripción:</h5>
-                            <input type="text" class="form-control" placeholder="Descripción" id="funcDescripcion" data-required="true">
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-xl-3">
-                            <h5>Precio:</h5>
-                            <input type="text" class="money form-control" placeholder="Precio" id="funcPrecio" required>
-                            <div class="invalid-feedback">
-                                <div class="form-group has-danger">
-                                    <div class="form-control-feedback">Precio es requerido</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-xl-3">
-                            <h5>Cantidad:</h5>
-                            <input type="number" class="form-control" placeholder="Cantidad" id="funcCantidad" required>
-                            <div class="invalid-feedback">
-                                <div class="form-group has-danger">
-                                    <div class="form-control-feedback">Cantidad es requerido</div>
-                                </div>
-                            </div>
+                            <h5>Porcentaje:</h5>
+                            <input type="text" class="form-control" placeholder="Porcentaje" id="funcPorcentaje" data-required="true" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-6 col-xl-3">
-                            <h5>Categoría:</h5>
-                            <select class="form-control" id="selectCategoria" required>
-                                <option value="" disabled selected>Seleccione Categoría.</option>
-                                @if (ViewBag.categorias != null)
+                            <h5>Tipo Estado:</h5>
+                            <select class="form-control" id="selectTipoEstado" required>
+                                <option value="" disabled selected>Seleccione Tipo de Estados.</option>
+                                @if (ViewBag.tipoEstados != null)
                                 {
-                                    foreach (var item in ViewBag.categorias)
+                                    foreach (var item in ViewBag.tipoEstados)
                                     {
                                         <option value=@item.Id.ToString()> @item.Name</option>
                                     }
                                 }
                             </select>
                         </div>
-
                         <div class="col-sm-12 col-md-6 col-xl-3">
-                            <div class="col-12 col-md-4">
-                                <h5>Activo</h5>
-                            </div>
-                            <div class="col-12 col-sm-2">
-                                <div class="input-group">
-                                    <input class="form-check" type="checkbox" id="check1" checked>
-                                </div>
-                            </div>
+                            <h5>Tipo Acción:</h5>
+                            <select class="form-control" id="selectTipoAccion" required>
+                                <option value="" disabled selected>Seleccione Tipo de Accion.</option>
+                                @if (ViewBag.tipoAcciones != null)
+                                {
+                                    foreach (var item in ViewBag.tipoAcciones)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Name</option>
+                                    }
+                                }
+                            </select>
                         </div>
                     </div>
                     <br />
@@ -199,17 +174,17 @@
     </div>
 </div>
 
-@*-----------MODAL EDITAR PRODUCTO-------------*@
-<div class="modal fade modal-lg" id="modalEditProducto" tabindex="-1" role="dialog" aria-labelledby="EditarProductoModalLabel" aria-hidden="true">
+@*-----------MODAL CREAR CAMPANIA-------------*@
+<div class="modal fade modal-lg" id="modalEditCampania" tabindex="-1" role="dialog" aria-labelledby="EditarCampaniaModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="CrearProductoModalLabel">Producto</h5>
+                <h5 class="modal-title" id="CrearCampaniaModalLabel">Producto</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="formEditProducto" class="validarProductoUpdate" novalidate>
+            <form id="formEditCampania" class="validarCampaniaUpdate" novalidate>
                 <input type="text" class="form-control" id="funcId" data-required="true" hidden>
                 <div class="modal-body">
                     <div class="row">
@@ -224,52 +199,36 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6 col-xl-3">
-                            <h5>Descripción:</h5>
-                            <input type="text" class="form-control" placeholder="Descripción" id="funcDescripcionEdit" data-required="true">
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-xl-3">
-                            <h5>Precio:</h5>
-                            <input type="text" class="money form-control" placeholder="Precio" id="funcPrecioEdit"  required>
-                            <div class="invalid-feedback">
-                                <div class="form-group has-danger">
-                                    <div class="form-control-feedback">Precio es requerido</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-xl-3">
-                            <h5>Cantidad:</h5>
-                            <input type="number" class="form-control" placeholder="Cantidad" id="funcCantidadEdit" required>
-                            <div class="invalid-feedback">
-                                <div class="form-group has-danger">
-                                    <div class="form-control-feedback">Cantidad es requerido</div>
-                                </div>
-                            </div>
+                            <h5>Porcentaje:</h5>
+                            <input type="text" class="form-control" placeholder="Porcentaje" id="funcPorcentajeEdit" data-required="true">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-6 col-xl-3">
-                            <h5>Categoría:</h5>
-                            <select class="form-control" id="selectCategoriaEdit" required>
-                                <option value="" disabled selected>Seleccione Categoría.</option>
-                                @if (ViewBag.categorias != null)
+                            <h5>Tipo Estado:</h5>
+                            <select class="form-control" id="selectTipoEstadoEdit" required>
+                                <option value="" disabled selected>Seleccione Tipo Control.</option>
+                                @if (ViewBag.tipoEstados != null)
                                 {
-                                    foreach (var item in ViewBag.categorias)
+                                    foreach (var item in ViewBag.tipoEstados)
                                     {
                                         <option value=@item.Id.ToString()> @item.Name</option>
                                     }
                                 }
                             </select>
                         </div>
-
                         <div class="col-sm-12 col-md-6 col-xl-3">
-                            <div class="col-12 col-md-4">
-                                <h5>Activo</h5>
-                            </div>
-                            <div class="col-12 col-sm-2">
-                                <div class="input-group">
-                                    <input class="form-check" type="checkbox" id="check1Edit" checked>
-                                </div>
-                            </div>
+                            <h5>Tipo Accion:</h5>
+                            <select class="form-control" id="selectTipoAccionEdit" required>
+                                <option value="" disabled selected>Seleccione Accion.</option>
+                                @if (ViewBag.tipoAcciones != null)
+                                {
+                                    foreach (var item in ViewBag.tipoAcciones)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Name</option>
+                                    }
+                                }
+                            </select>
                         </div>
                     </div>
                     <br />

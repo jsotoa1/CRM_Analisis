@@ -1,0 +1,192 @@
+﻿
+@{
+    ViewData["Title"] = "GestionQuejas";
+}
+
+<link rel="stylesheet" href="~/Content/DataTable/bootstrap.css" />
+<link rel="stylesheet" href="~/Content/DataTable/dataTables.bootstrap4.min.css" />
+<link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
+<link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
+<link rel="stylesheet" href="~/Content/styles/pageStyles.css" />
+
+<script src="~/Scripts/metodos/customAlert.js"></script>
+<script src="~/Scripts/metodos/generarTablas.js"></script>
+<script src="~/Content/DataTable/jquery.dataTables.min.js"></script>
+<script src="~/Content/DataTable/dataTables.bootstrap4.min.js"></script>
+<script src="~/Scripts/gijgo/gijgo.min.js"></script>
+<script src="~/Scripts/jquery-validate/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/Quejas/Quejas.js"></script>
+
+<style type="text/css">
+    .modal-lg {
+        max-width: 99% !important;
+    }
+
+    .modal-body {
+        max-height: calc(100vh - 145px);
+        overflow-y: auto;
+    }
+
+    .row {
+        margin: 10px;
+    }
+
+    .tablaObjeto {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 100%;
+    }
+
+    .modalRoll {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 495px;
+    }
+
+    #item-lb {
+        text-align: left;
+        margin-top: 0.5em;
+        padding: 6px;
+        color: darkslategrey;
+        font-size: 17px;
+    }
+</style>
+<script type="text/javascript">
+
+    var rootPath = window.location.origin;
+    var arrayQueja = ["Queja_ID", "Nombre_Persona",
+        "Telefono", "Email", "Nombre_Vendedor", "Descripcio_Queja", "Fecha_Queja", "Operaciones"];
+
+
+    $(document).ready(function () {
+        generarTabla();
+    });
+
+
+
+       //function mayus(e) {
+       //     e.value = e.value.toUpperCase();
+       // }
+
+</script>
+<div class="container-fluid">
+    <div class="tab-pane fade show active" id="funcionalidad" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
+            <br />
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-xl-12">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12">
+                            <div class="pull-left">
+                                <h1 class="text-blue">Gestión de Quejas</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="divPromotions" class="col-sm-2 col-md-2 col-xl-8">
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-xl-2 pull-right">
+
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-xl-2 pull-right">
+                            @*<a target="_blank" href="@Url.Action("ExporttoExcel", "GestionRutas")" style="padding:6px" class="btn btn-success btn-block active" id="exportExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar</a>*@
+                            <button id="btnProducto" type="button" class="btn btn-primary btn-block active btn-sec" data-toggle="modal" data-target="#modalCrearQueja">Crear Queja</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row tablaObjeto" id="contTable">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*-----------MODAL CREAR QUEJA-------------*@
+<div class="modal fade modal-lg" id="modalCrearQueja" tabindex="-1" role="dialog" aria-labelledby="CrearQuejaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CrearQuejaModalLabel">Quejas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formCrearQueja" class="validarQueja" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Nombre Persona:</h5>
+                            <input type="text" class="form-control" placeholder="Nombre" id="funcNombre" data-required="true" required
+                                   maxlength="50">
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Nombre de Persona es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Telefono:</h5>
+                            <input type="text" class="form-control" placeholder="Telefono" id="funcTelefono" data-required="true">
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Telefono es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Email:</h5>
+                            <input type="text" class="form-control" placeholder="Email" id="funcEmail" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Email es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Nombre de Vendedor:</h5>
+                            <input type="text" class="form-control" placeholder="NombreVendedor" id="funcVendedor" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Nombre Vendedor es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Descripción de Queja:</h5>
+                            <input type="text" class="form-control" placeholder="Descripcion" id="funcDescripcion" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Descripcion es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Fecha de Queja:</h5>
+                            <input type="date" class="form-control" placeholder="FechaQueja" id="funcFechaQueja" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Fecha de Queja es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

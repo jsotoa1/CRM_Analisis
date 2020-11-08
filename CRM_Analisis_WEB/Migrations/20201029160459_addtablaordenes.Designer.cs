@@ -4,14 +4,16 @@ using CRM_Analisis_WEB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CRM_Analisis_WEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201029160459_addtablaordenes")]
+    partial class addtablaordenes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -343,7 +345,7 @@ namespace CRM_Analisis_WEB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Comentario_al_Comprador");
+                    b.Property<string>("Comentario_Solicitud");
 
                     b.Property<int?>("Direccion_Entrega_OrdenId");
 
@@ -358,11 +360,6 @@ namespace CRM_Analisis_WEB.Migrations
                     b.Property<DateTime?>("FechaOrden");
 
                     b.Property<DateTime>("FechaSolicitud");
-
-                    b.Property<string>("Nombre_de_Orden")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Terminos_de_Orden");
 
                     b.Property<int?>("clienteId");
 
