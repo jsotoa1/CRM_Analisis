@@ -1,12 +1,12 @@
-﻿using CRM_Analisis_WEB.Data.Entidades;
-using CRM_Analisis_WEB.Helpers;
+﻿using ProyectoGraduacion_WEB.Data.Entidades;
+using ProyectoGraduacion_WEB.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CRM_Analisis_WEB.Data
+namespace ProyectoGraduacion_WEB.Data
 {
     public class SeedDb
     {

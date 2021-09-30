@@ -1,0 +1,436 @@
+﻿@{
+    ViewData["Title"] = "Reparación Maquinas";
+}
+
+@*Integración de librerias*@
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+<script src="https://flowchart.js.org/flowchart-latest.js"></script>
+<link rel="stylesheet" href="~/Content/DataTable/bootstrap.css" />
+<link rel="stylesheet" href="~/Content/DataTable/dataTables.bootstrap4.min.css" />
+<link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
+<link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
+<link rel="stylesheet" href="~/Content/styles/pageStyles.css" />
+
+<script src="~/Scripts/metodos/customAlert.js"></script>
+<script src="~/Scripts/metodos/generarTablas.js"></script>
+<script src="~/Content/DataTable/jquery.dataTables.min.js"></script>
+<script src="~/Content/DataTable/dataTables.bootstrap4.min.js"></script>
+<script src="~/Scripts/gijgo/gijgo.min.js"></script>
+<script src="~/Scripts/jquery-validate/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<style type="text/css">
+    .row {
+        margin: 10px;
+    }
+
+    .tablaObjeto {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 100%;
+    }
+
+    .end-element {
+        fill: #FFFFFF;
+    }
+
+    .centrado {
+        text-align: center;
+    }
+
+    .modal-sm {
+        max-width: 99% !important;
+    }
+
+    .modal-lg {
+        max-width: 99% !important;
+    }
+
+
+    .modal-body {
+        max-height: calc(100vh - 145px);
+        overflow-y: auto;
+    }
+
+    .row {
+        margin: 10px;
+    }
+
+    .modalRoll {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 495px;
+    }
+</style>
+
+<script>
+    var rootPath = window.location.origin;
+    var arraFlujo = ["Flujo_ID", "Nombre_Flujo",
+        "Paso_Flujo", "Persona_Realiza", "Tiempo", "Email", "Fecha", "Operaciones"];
+
+    $(document).ready(function () {
+        $("#funcMant").val("Reparacion_Maquinaria");
+        var btn = document.getElementById("run"),
+            cd = document.getElementById("code"),
+            chart;
+
+        (btn.onclick = function () {
+            var code = cd.value;
+
+            if (chart) {
+                chart.clean();
+            }
+
+            chart = flowchart.parse(code);
+            chart.drawSVG('canvas', {
+                'x': 0,
+                'y': 0,
+                'line-width': 3,
+                'line-length': 50,
+                'text-margin': 10,
+                'font-size': 14,
+                'font-color': 'black',
+                'line-color': 'black',
+                'element-color': 'black',
+                'fill': 'white',
+                'yes-text': 'yes',
+                'no-text': 'no',
+                'arrow-end': 'block',
+                'scale': 1,
+                // style symbol types
+                'symbols': {
+                    'start': {
+                        'font-color': 'black',
+                        'element-color': 'black',
+                        'fill': 'white'
+                    },
+                    'end': {
+                        'class': 'end-element'
+                    }
+                },
+                // even flowstate support ;-)
+                'flowstate': {
+                    'past': { 'fill': '#FFFFFF', 'font-size': 12 },
+                    'current': { 'fill': 'yellow', 'font-color': 'red', 'font-weight': 'bold' },
+                    'future': { 'fill': '#FFFFFF' },
+                    'request': { 'fill': 'blue' },
+                    'invalid': { 'fill': '#FFFFFF' },
+                    'approved': { 'fill': '#FFFFFF', 'font-size': 12, 'yes-text': 'APPROVED', 'no-text': 'n/a' },
+                    'rejected': { 'fill': '#FFFFFF', 'font-size': 12, 'yes-text': 'n/a', 'no-text': 'REJECTED' }
+                }
+            });
+
+            $('[id^=sub1]').click(function () {
+                alert('info here');
+            });
+        })();
+
+        $("#op1").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Responsable de la reparación (Personal del taller)</b></p><br /><p> inicia con los datos que sean necesarios para registrar la reparación, Tiempo 1 minuto</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+            //'mouseleave': function () { //alejado
+            //    $('#modalinfo').modal('hide');
+            //}
+        });
+        $("#op2").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Responsable de la reparación (Personal del taller)</b></p><br /><p> El responsable de la reparación le informa al ingeniero de mantenimiento la fecha que se reparó la máquina. Tiempo estimado 1 minuto</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op3").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Responsable de la reparación (Personal del taller)</b></p><br /><p> El responsable de la reparación le informa al ingeniero en que área se ubica la maquina afectada ya sea tintorería, preparación, entre otros. tiempo estimado 1 minuto</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op4").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Responsable de la reparación (Personal del taller)</b></p><br /><p>El responsable de la reparación le informa al ingeniero el nombre y número de la máquina</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op5").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Responsable de la reparación (Personal del taller)</b></p><br /><p>El responsable de la reparación le informa al ingeniero que tipo de reparación se realizo ya sea mecánico, eléctrico o electrónico.  Tiempo estimado de 1 minuto</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op6").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Responsable de la reparación (Personal del taller)</b></p><br /><p>El responsable de la reparación le informa al ingeniero el componente que fallo de la máquina. Tiempo 30 minutos</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op7").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Responsable de la reparación (Personal del taller) </b></p><br /><p>El responsable de la reparación le informa al ingeniero a que sistema de la maquina pertenece el componente dañado, por ejemplo, sistema de arranque, mudada, entre otros. Tiempo estimado 1 minuto </p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op8").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Responsable de la reparación (Personal del taller)</b></p><br /><p>El responsable de la junto al ingeniero definen que tan crítico fue la falla, ya que procede desde bajo, medio y alto. Tiempo estimado 1 minuto </p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op9").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Responsable de la reparación (Personal del taller)</b></p><br /><p> El responsable de la reparación le informa al ingeniero cuanto tiempo se detuvo la máquina, hay ocasiones que son hasta por días. Tiempo estimado 1 minuto</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op10").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Responsable de la reparación (Personal del taller)</b></p><br /><p>El responsable de la junto al ingeniero definen que tan crítico fue la falla, ya que procede desde bajo, medio y alto.</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op11").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento)y Responsable de la reparación (Personal del taller)</b></p><br /><p>El responsable de la reparación le informa al ingeniero los repuestos utilizados para la reparación de la máquina. Tiempo 1 minuto</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op12").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Responsable de la reparación (Personal del taller)</b></p><br /><p>El responsable de la reparación junto al ingeniero describe lo que sucedido con la máquina. Tiempo 1 minuto aprox</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op13").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) </b></p><br /><p>El ingeniero ya con toda la información documenta lo realizado. Tiempo 20 minutos</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });   
+        $("#st").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<p class="centrado" id="tituloinfo">Se le da inicio al flujo</p>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#e").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<p class="centrado" id="tituloinfo">Se le da fin al flujo</p>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+
+
+    });
+
+    function myFunction(event, node) {
+        console.log("You just clicked this node:", node);
+    }
+
+    function modalOpen(event, node) {
+        $("#tituloModalMantMaquina").html('<h5 class="modal-title" id="tituloModalMantMaquina">' + node.text + '</h5>');
+        $('#funcNombre').val('');
+        $('#funIdFlujo').val('');
+        $('#funIdFlujo').val(node.key);
+        $('#funcNombre').val(node.text);
+        $('#modalGuardarMantMaquina').modal('show');
+        var nombreflujoo = "Reparacion_Maquinaria";
+        generarTabla(nombreflujoo, node.key);
+    }
+</script>
+
+<div class="container-fluid">
+    <div class="tab-pane fade show active" id="funcionalidad" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
+            <br />
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-xl-12">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12">
+                            <div class="pull-left">
+                                <h1 class="text-blue">Reparación Maquinas</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="divPromotions" class="col-sm-2 col-md-2 col-xl-8">
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-xl-2 pull-right">
+
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-xl-2 pull-right">
+                            @*<a target="_blank" href="@Url.Action("ExporttoExcel", "GestionRutas")" style="padding:6px" class="btn btn-success btn-block active" id="exportExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar</a>
+                                <button id="btnProducto" type="button" class="btn btn-primary btn-block active btn-sec" data-toggle="modal" data-target="#modalCrearCliente">Crear Cliente</button>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <textarea id="code" style="width: 100%;" rows="11" hidden>
+              st=>start: Inicio:$modalOpen
+              e=>end: Fin:$modalOpen
+              op1=>operation: Registro de reparación:$modalOpen
+              op2=>operation: Fecha de reparación:$modalOpen
+              op3=>operation: Ubicación de la máquina :$modalOpen
+              op4=>operation: Nombre de la máquina donde se realizo la reparación :$modalOpen
+              op5=>operation: Tipo de reparación, mecánico, eléctrico o electrónico:$modalOpen
+              op6=>operation: Que componente presento la falla:$modalOpen
+              op7=>operation: A que sistema de la máquina pertenece el componente que fallo:$modalOpen 
+              op8=>operation: Responsable de la reparación:$modalOpen
+              op9=>operation: Tiempo que estuvo detenida la máquina por la falla:$modalOpen
+              op10=>operation: Nivel de criticidad; bajo, medio o alto:$modalOpen
+              op11=>operation: Repuestos utilizados:$modalOpen 
+              op12=>operation: Descripción:$modalOpen 
+              op13=>operation: Almacenar el registro de reparación:$modalOpen
+              para=>parallel: parallel tasks
+
+              st->op1->op2->op3->op4->op5->op6->op7->op8->op9->op10->op11->op12->op13->e
+            </textarea>
+            </div>
+            <button id="run" type="button" hidden>Run</button>
+            <div class="centrado" id="canvas"></div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/MantMaquinaria.js"></script>
+@*-----------MODAL GUARDAR-------------*@
+<div class="modal fade modal-lg" id="modalGuardarMantMaquina" tabindex="-1" role="dialog" aria-labelledby="CrearQuejaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tituloModalMantMaquina"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formAddFlujo" class="validarFlujo" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <input type="text" id="funIdFlujo" hidden>
+                            <input type="text" id="funcMant" hidden>
+                            <h5>Nombre del paso:</h5>
+                            <input type="text" class="form-control" placeholder="Nombre del paso" id="funcNombre" data-required="true" required
+                                   maxlength="50">
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Nombre del paso es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Fecha:</h5>
+                            <input type="date" class="form-control" placeholder="Fecha" id="funcFecha" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Fecha es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>¿Quien lo realiza?:</h5>
+                            <input type="text" class="form-control" placeholder="¿Quien lo realiza?" id="funcRealiza" data-required="true">
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">campo es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Email:</h5>
+                            <input type="text" class="form-control" placeholder="Email" id="funcEmail" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Email es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Tiempo tomado:</h5>
+                            <input type="text" class="form-control" placeholder="Tiempo tomado" id="funcTiempo" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Tiempo tomado es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Comentario:</h5>
+                            <textarea type="text" class="form-control" placeholder="Comentario" id="funcComentario" rows="5" required></textarea>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Comentario es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="row tablaObjeto" id="contTable">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@*-----------MODAL INFORMACIÓN-------------*@
+<div class="modal fade modal-sm" id="modalinfo" tabindex="-1" role="dialog" aria-labelledby="CrearQuejaModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row" id="tituloinfo">
+                    @*<h5 class="modal-title" id="tituloinfo"></h5>*@
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CRM_Analisis_WEB.Data;
-using CRM_Analisis_WEB.Data.Entidades;
-using CRM_Analisis_WEB.Models;
+using ProyectoGraduacion_WEB.Data;
+using ProyectoGraduacion_WEB.Data.Entidades;
+using ProyectoGraduacion_WEB.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CRM_Analisis_WEB.Controllers
+namespace ProyectoGraduacion_WEB.Controllers
 {
     [Authorize(Roles = "Administrador")]
     public class GestionQuejasController : Controller

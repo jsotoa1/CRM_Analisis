@@ -1,10 +1,12 @@
-﻿function generarTabla() {
+﻿
+function generarTabla() {
     $("#contTable").empty();
     mtGenerarTabla(arrayQueja, "tblQueja", "contTable", "titulosQueja", "valoresQueja");
     $('#tblQueja').DataTable();
     var arrayNotOrder = [7];
     mtRecuperarDatosTablaPersonalizada("/GestionQuejas/ObtenerQuejas", null, "Account/Login", "tblQueja", "valoresQueja", arrayNotOrder);
 }
+
 function agregarQueja() {
 
     var nombre = $("#funcNombre").val();

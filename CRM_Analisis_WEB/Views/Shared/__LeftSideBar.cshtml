@@ -1,7 +1,7 @@
 ﻿
 @{
     @using Newtonsoft.Json;
-    var listFunctionalities = JsonConvert.DeserializeObject<List<CRM_Analisis_WEB.Models.FuncionalidadViewModel>>(TempData["_ListaFuncionalidades"].ToString());
+    var listFunctionalities = JsonConvert.DeserializeObject<List<ProyectoGraduacion_WEB.Models.FuncionalidadViewModel>>(TempData["ListaFunc"].ToString());
 }
 
 
@@ -78,5 +78,5 @@
     </div>
 </div>
 @{ 
-    TempData["_ListaFuncionalidades"] = JsonConvert.SerializeObject(listFunctionalities);
+    TempData["ListaFunc"] = JsonConvert.SerializeObject(listFunctionalities);
 }

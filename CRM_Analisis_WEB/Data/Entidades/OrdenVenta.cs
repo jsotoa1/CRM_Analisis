@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace CRM_Analisis_WEB.Data.Entidades
+namespace ProyectoGraduacion_WEB.Data.Entidades
 {
     public class OrdenVenta
     {

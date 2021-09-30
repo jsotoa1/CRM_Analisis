@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CRM_Analisis_WEB.Helpers
+namespace ProyectoGraduacion_WEB.Helpers
 {
     public class RoleRequirement : IAuthorizationRequirement
     {

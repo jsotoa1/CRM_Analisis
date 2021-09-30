@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CRM_Analisis_WEB.Migrations
+namespace ProyectoGraduacion_WEB.Migrations
 {
     public partial class NuevasTablas : Migration
     {

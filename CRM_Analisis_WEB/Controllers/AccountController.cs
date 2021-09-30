@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CRM_Analisis_WEB.Data;
-using CRM_Analisis_WEB.Data.Entidades;
-using CRM_Analisis_WEB.Helpers;
-using CRM_Analisis_WEB.Models;
+using ProyectoGraduacion_WEB.Data;
+using ProyectoGraduacion_WEB.Data.Entidades;
+using ProyectoGraduacion_WEB.Helpers;
+using ProyectoGraduacion_WEB.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace CRM_Analisis_WEB.Controllers
+namespace ProyectoGraduacion_WEB.Controllers
 {
     public class AccountController : Controller
     {
@@ -75,7 +75,7 @@ namespace CRM_Analisis_WEB.Controllers
                         });
                     }
 
-                    TempData["_ListaFuncionalidades"] = JsonConvert.SerializeObject(listfuncionalidad);
+                    TempData["ListaFunc"] = JsonConvert.SerializeObject(listfuncionalidad);
 
                     if (Request.Query.Keys.Contains("ReturnUrl"))
                     {
@@ -94,7 +94,7 @@ namespace CRM_Analisis_WEB.Controllers
         public async Task<IActionResult> Logout()
         {
             await _userHelper.LogoutAsync();
-            return RedirectToAction("Home", "Dashboard");
+            return RedirectToAction("Login", "Account");
         }
     }
 

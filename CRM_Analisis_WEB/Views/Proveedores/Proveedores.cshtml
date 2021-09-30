@@ -1,0 +1,384 @@
+﻿@{
+    ViewData["Title"] = "Proveedores";
+}
+
+@*Integración de librerias*@
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+<script src="https://flowchart.js.org/flowchart-latest.js"></script>
+<link rel="stylesheet" href="~/Content/DataTable/bootstrap.css" />
+<link rel="stylesheet" href="~/Content/DataTable/dataTables.bootstrap4.min.css" />
+<link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
+<link rel="stylesheet" href="~/Scripts/gijgo/gijgo.min.css" />
+<link rel="stylesheet" href="~/Content/styles/pageStyles.css" />
+
+<script src="~/Scripts/metodos/customAlert.js"></script>
+<script src="~/Scripts/metodos/generarTablas.js"></script>
+<script src="~/Content/DataTable/jquery.dataTables.min.js"></script>
+<script src="~/Content/DataTable/dataTables.bootstrap4.min.js"></script>
+<script src="~/Scripts/gijgo/gijgo.min.js"></script>
+<script src="~/Scripts/jquery-validate/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<style type="text/css">
+    .row {
+        margin: 10px;
+    }
+
+    .tablaObjeto {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 100%;
+    }
+
+    .end-element {
+        fill: #FFFFFF;
+    }
+
+    .centrado {
+        text-align: center;
+    }
+
+    .modal-sm {
+        max-width: 99% !important;
+    }
+
+    .modal-lg {
+        max-width: 99% !important;
+    }
+
+
+    .modal-body {
+        max-height: calc(100vh - 145px);
+        overflow-y: auto;
+    }
+
+    .row {
+        margin: 10px;
+    }
+
+    .modalRoll {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 495px;
+    }
+</style>
+
+<script>
+    var rootPath = window.location.origin;
+    var arraFlujo = ["Flujo_ID", "Nombre_Flujo",
+        "Paso_Flujo", "Persona_Realiza", "Tiempo", "Email", "Fecha", "Operaciones"];
+
+    $(document).ready(function () {
+        $("#funcMant").val("Proveedores");
+        var btn = document.getElementById("run"),
+            cd = document.getElementById("code"),
+            chart;
+
+        (btn.onclick = function () {
+            var code = cd.value;
+
+            if (chart) {
+                chart.clean();
+            }
+
+            chart = flowchart.parse(code);
+            chart.drawSVG('canvas', {
+                'x': 0,
+                'y': 0,
+                'line-width': 3,
+                'line-length': 50,
+                'text-margin': 10,
+                'font-size': 14,
+                'font-color': 'black',
+                'line-color': 'black',
+                'element-color': 'black',
+                'fill': 'white',
+                'yes-text': 'yes',
+                'no-text': 'no',
+                'arrow-end': 'block',
+                'scale': 1,
+                // style symbol types
+                'symbols': {
+                    'start': {
+                        'font-color': 'black',
+                        'element-color': 'black',
+                        'fill': 'white'
+                    },
+                    'end': {
+                        'class': 'end-element'
+                    }
+                },
+                // even flowstate support ;-)
+                'flowstate': {
+                    'past': { 'fill': '#FFFFFF', 'font-size': 12 },
+                    'current': { 'fill': 'yellow', 'font-color': 'red', 'font-weight': 'bold' },
+                    'future': { 'fill': '#FFFFFF' },
+                    'request': { 'fill': 'blue' },
+                    'invalid': { 'fill': '#FFFFFF' },
+                    'approved': { 'fill': '#FFFFFF', 'font-size': 12, 'yes-text': 'APPROVED', 'no-text': 'n/a' },
+                    'rejected': { 'fill': '#FFFFFF', 'font-size': 12, 'yes-text': 'n/a', 'no-text': 'REJECTED' }
+                }
+            });
+
+            $('[id^=sub1]').click(function () {
+                alert('info here');
+            });
+        })();
+
+        $("#op1").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Proveedor</b></p><br /><p>El proveedor recibe la orden de compra realizado por el ingeniero de mantenimiento.Tiempo estimado de 10 minutos.</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+            //'mouseleave': function () { //alejado
+            //    $('#modalinfo').modal('hide');
+            //}
+        });
+        $("#op2").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Proveedor y Bodeguero</b></p><br /><p>El proveedor realiza la entrega del componente o insumo al bodeguero. Tiempo estimado de 20 minutos.</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op3").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Proveedor y Bodeguero</b></p><br /><p> El proveedor valida que lo que se solicito sea lo mismo que el proveedor haya entregado. Tiempo estimado de 20 minutos.</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op4").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Bodeguero.</b></p><br /><p>Recopila los datos del proveedor y del producto entregado. Tiempo estimado de 20 minutos.</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op5").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Bodeguero y Secretaria (Recursos Humanos)</b></p><br /><p>El bodeguero hace entrega de la factura a la secretaria para que días después sea realizado el pago. Tiempo estimado de 20 minutos.</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#op6").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Bodeguero y Rodrigo (Ingeniero de mantenimiento).</b></p><br /><p>Con base a lo comprado guardan la información para así ir comparando con otros proveedores o compras anteriores para ver lo económico, en el sentido de si ha subido de precio, ha bajado o más bien sigue igual. Tiempo estimado de 20 minutos.</p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#para").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<div class="centrado" id="tituloinfo"><p><b>Rodrigo (Ingeniero de mantenimiento) y Responsable de la reparación (Personal del taller) </b></p><br /><p>El responsable de la reparación le informa al ingeniero a que sistema de la maquina pertenece el componente dañado, por ejemplo, sistema de arranque, mudada, entre otros. Tiempo estimado 1 minuto </p></div>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+
+        $("#st").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<p class="centrado" id="tituloinfo">Se le da inicio al flujo</p>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+        $("#e").on({
+            'mouseenter': function () { //sobre
+                $("#tituloinfo").html('<p class="centrado" id="tituloinfo">Se le da fin al flujo</p>');
+
+                $('#modalinfo').modal('show');
+                setTimeout(function () { $('#modalinfo').modal('hide'); }, 100000);
+            },
+        });
+
+
+    });
+
+    function myFunction(event, node) {
+        console.log("You just clicked this node:", node);
+    }
+
+    function modalOpen(event, node) {
+        $("#tituloModalMantMaquina").html('<h5 class="modal-title" id="tituloModalMantMaquina">' + node.text + '</h5>');
+        $('#funcNombre').val('');
+        $('#funIdFlujo').val('');
+        $('#funIdFlujo').val(node.key);
+        $('#funcNombre').val(node.text);
+        $('#modalGuardarMantMaquina').modal('show');
+        var nombreflujoo = "Proveedores";
+        generarTabla(nombreflujoo, node.key);
+    }
+</script>
+
+<div class="container-fluid">
+    <div class="tab-pane fade show active" id="funcionalidad" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
+            <br />
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-xl-12">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12">
+                            <div class="pull-left">
+                                <h1 class="text-blue">Proveedores</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-xl-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="divPromotions" class="col-sm-2 col-md-2 col-xl-8">
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-xl-2 pull-right">
+
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-xl-2 pull-right">
+                            @*<a target="_blank" href="@Url.Action("ExporttoExcel", "GestionRutas")" style="padding:6px" class="btn btn-success btn-block active" id="exportExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar</a>
+                                <button id="btnProducto" type="button" class="btn btn-primary btn-block active btn-sec" data-toggle="modal" data-target="#modalCrearCliente">Crear Cliente</button>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <textarea id="code" style="width: 100%;" rows="11" hidden>
+              st=>start: Inicio:$modalOpen
+              e=>end Fin:$modalOpen
+              op1=>operation: Recibe Orden de Compra:$modalOpen
+              op2=>operation: Entrega Pedido:$modalOpen
+              op3=>operation: Validación de Componentes o Insumos:$modalOpen
+              op4=>operation: Recepción el pedido o recopilar información:$modalOpen
+              op5=>operation: Presenta la factura a revisión:$modalOpen
+              op6=>operation: Verificación de proveedor más economico:$modalOpen
+              para=>parallel: Se solicita con el proveedor:$modalOpen
+
+              st->op1->op2->op3->op4->op5->op6->e
+              para(path1, bottom)->op4(right)
+              para(path2, top
+            </textarea>
+            </div>
+            <button id="run" type="button" hidden>Run</button>
+            <div class="centrado" id="canvas"></div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/MantMaquinaria.js"></script>
+@*-----------MODAL GUARDAR-------------*@
+<div class="modal fade modal-lg" id="modalGuardarMantMaquina" tabindex="-1" role="dialog" aria-labelledby="CrearQuejaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tituloModalMantMaquina"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formAddFlujo" class="validarFlujo" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <input type="text" id="funIdFlujo" hidden>
+                            <input type="text" id="funcMant" hidden>
+                            <h5>Nombre del paso:</h5>
+                            <input type="text" class="form-control" placeholder="Nombre del paso" id="funcNombre" data-required="true" required
+                                   maxlength="50">
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Nombre del paso es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Fecha:</h5>
+                            <input type="date" class="form-control" placeholder="Fecha" id="funcFecha" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Fecha es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>¿Quien lo realiza?:</h5>
+                            <input type="text" class="form-control" placeholder="¿Quien lo realiza?" id="funcRealiza" data-required="true">
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">campo es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Email:</h5>
+                            <input type="text" class="form-control" placeholder="Email" id="funcEmail" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Email es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Tiempo tomado:</h5>
+                            <input type="text" class="form-control" placeholder="Tiempo tomado" id="funcTiempo" required>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Tiempo tomado es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Comentario:</h5>
+                            <textarea type="text" class="form-control" placeholder="Comentario" id="funcComentario" rows="5" required></textarea>
+                            <div class="invalid-feedback">
+                                <div class="form-group has-danger">
+                                    <div class="form-control-feedback">Comentario es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="row tablaObjeto" id="contTable">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@*-----------MODAL INFORMACIÓN-------------*@
+<div class="modal fade modal-sm" id="modalinfo" tabindex="-1" role="dialog" aria-labelledby="CrearQuejaModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row" id="tituloinfo">
+                    @*<h5 class="modal-title" id="tituloinfo"></h5>*@
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>

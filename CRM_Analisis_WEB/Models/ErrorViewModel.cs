@@ -1,6 +1,6 @@
 using System;
 
-namespace CRM_Analisis_WEB.Models
+namespace ProyectoGraduacion_WEB.Models
 {
     public class ErrorViewModel
     {

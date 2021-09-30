@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CRM_Analisis_WEB.Models
+namespace ProyectoGraduacion_WEB.Models
 {
     public class LoginViewModel
     {

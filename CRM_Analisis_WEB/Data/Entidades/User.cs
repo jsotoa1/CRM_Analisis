@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace CRM_Analisis_WEB.Data.Entidades
+namespace ProyectoGraduacion_WEB.Data.Entidades
 {
     public class User : IdentityUser
     {

@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CRM_Analisis_WEB.Data;
-using CRM_Analisis_WEB.Data.Entidades;
-using CRM_Analisis_WEB.Models;
+using ProyectoGraduacion_WEB.Data;
+using ProyectoGraduacion_WEB.Data.Entidades;
+using ProyectoGraduacion_WEB.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace CRM_Analisis_WEB.Controllers
+namespace ProyectoGraduacion_WEB.Controllers
 {
     [Authorize(Roles = "Administrador")]
     public class ClientesController : Controller
@@ -152,6 +152,7 @@ namespace CRM_Analisis_WEB.Controllers
             }
             return Json(new { Message = "No existen atributos ingresados." }, new Newtonsoft.Json.JsonSerializerSettings());
         }
+
         [HttpPost]
         public JsonResult GuardarCliente(Cliente model)
         {
@@ -172,6 +173,7 @@ namespace CRM_Analisis_WEB.Controllers
             }
             return Json(new { success = false, responseText = "Error al guardar los datos." }, new Newtonsoft.Json.JsonSerializerSettings());
         }
+
         [HttpPost]
         public JsonResult DetalleCliente(string id)
         {

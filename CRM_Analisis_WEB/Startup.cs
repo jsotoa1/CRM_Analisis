@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CRM_Analisis_WEB.Data;
-using CRM_Analisis_WEB.Data.Entidades;
-using CRM_Analisis_WEB.Helpers;
+using ProyectoGraduacion_WEB.Data;
+using ProyectoGraduacion_WEB.Data.Entidades;
+using ProyectoGraduacion_WEB.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CRM_Analisis_WEB
+namespace ProyectoGraduacion_WEB
 {
     public class Startup
     {
@@ -57,7 +57,11 @@ namespace CRM_Analisis_WEB
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddTransient<IAuthorizationHandler, CustomRoleRequirementHandler>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
         }
+
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -75,14 +79,13 @@ namespace CRM_Analisis_WEB
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
-            app.UseCookiePolicy();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Account}/{action=Login}/{id?}");
             });
+            app.UseCookiePolicy();
         }
     }
 }

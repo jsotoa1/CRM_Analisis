@@ -1,9 +1,9 @@
-﻿using CRM_Analisis_WEB.Data.Entidades;
+﻿using ProyectoGraduacion_WEB.Data.Entidades;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
-namespace CRM_Analisis_WEB.Data
+namespace ProyectoGraduacion_WEB.Data
 {
     public class DataContext : IdentityDbContext<User>
 
@@ -48,6 +48,8 @@ namespace CRM_Analisis_WEB.Data
         public DbSet<Direccion_Entrega> direccion_Entregas { get; set; }
         public DbSet<Municipio> Municipios { get; set; }
         public DbSet<Departamento> Departamentos { get; set; }
+
+        public DbSet<Flujo> Flujos { get; set; }
 
     }
 }

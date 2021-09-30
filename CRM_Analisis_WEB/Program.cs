@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using CRM_Analisis_WEB.Data;
+using ProyectoGraduacion_WEB.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace CRM_Analisis_WEB
+namespace ProyectoGraduacion_WEB
 {
     public class Program
     {
