@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProyectoGraduacion_WEB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,13 @@ namespace ProyectoGraduacion_WEB.Controllers
     {
         public ActionResult Cotizacion()
         {
+            List<Tipo> listTipo = new List<Tipo>()
+            {
+                new Tipo() { Id = 1, Nombre = "PNC" },
+                new Tipo() { Id = 1, Nombre = "RO" },
+            };
+
+            ViewBag.tipo = listTipo;
             return View();
         }
 

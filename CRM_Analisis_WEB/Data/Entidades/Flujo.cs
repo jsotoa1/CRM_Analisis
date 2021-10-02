@@ -23,6 +23,10 @@ namespace ProyectoGraduacion_WEB.Data.Entidades
 
         [MaxLength(150, ErrorMessage = "El campo {0} no debe ser mayor a {1} caracteres.")]
         [Required]
+        public string Tipo { get; set; }
+
+        [MaxLength(150, ErrorMessage = "El campo {0} no debe ser mayor a {1} caracteres.")]
+        [Required]
         public string Persona_Realiza { get; set; }
 
         public string Tiempo_Tomado { get; set; }
@@ -35,6 +39,8 @@ namespace ProyectoGraduacion_WEB.Data.Entidades
 
         [Required]
         public DateTime Fecha { get; set; }
+
+        public int Estado { get; set; }
 
     }
 }

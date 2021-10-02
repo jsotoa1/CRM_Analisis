@@ -17,8 +17,10 @@ function agregarMantMaquinaria() {
     var funcEmail = $("#funcEmail").val();
     var funcTiempo = $("#funcTiempo").val();
     var funcComentario = $("#funcComentario").val();
-   
 
+    var combo = document.getElementById("selectTipo");
+    var tipo = combo.options[combo.selectedIndex].text;
+   
     if (funcNombre.length > 100 || funcFecha.length > 100 || funcRealiza.length > 100 || funcEmail.length > 100 || funcTiempo.length > 50 || funcComentario.length > 200) {
 
         if (funcNombre.length > 100) {
@@ -35,7 +37,7 @@ function agregarMantMaquinaria() {
                 type: "POST",
                 url: rootPath + '/MantMaquinaria/GuardarMantMaquinaria',
                 data: {
-                    Nombre_Flujo: NombreFlujo, Id_Paso_Flujo: funIdFlujo, Nombre_Paso_Fujo: funcNombre, Persona_Realiza: funcRealiza, Tiempo_Tomado: funcTiempo, Comentario: funcComentario, Email: funcEmail, Fecha: funcFecha
+                    Nombre_Flujo: NombreFlujo, Id_Paso_Flujo: funIdFlujo, Nombre_Paso_Fujo: funcNombre, Persona_Realiza: funcRealiza, Tiempo_Tomado: funcTiempo, Comentario: funcComentario, Email: funcEmail, Fecha: funcFecha, Tipo: tipo
                 },
                 success: function (response) {
                     if (response != null && response.success) {

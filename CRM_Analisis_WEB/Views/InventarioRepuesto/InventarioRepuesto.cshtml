@@ -66,8 +66,8 @@
 
 <script>
     var rootPath = window.location.origin;
-    var arraFlujo = ["Flujo_ID", "Nombre_Flujo",
-        "Paso_Flujo", "Persona_Realiza", "Tiempo", "Email", "Fecha", "Operaciones"];
+    var arraFlujo = ["Flujo_ID", "Tipo", "Nombre_Flujo",
+        "Paso_Flujo", "Persona_Realiza", "Tiempo", "Email", "Fecha", "Estado", "Operaciones"];
 
     $(document).ready(function () {
         $("#funcMant").val("Inv_Repuesto");
@@ -351,6 +351,19 @@
             <form id="formAddFlujo" class="validarFlujo" novalidate>
                 <div class="modal-body">
                     <div class="row">
+                        <div class="col-sm-12 col-md-6 col-xl-3">
+                            <h5>Tipo:</h5>
+                            <select class="form-control" id="selectTipo" required>
+                                <option value="" disabled selected>Seleccione Tipo.</option>
+                                @if (ViewBag.tipo != null)
+                                {
+                                    foreach (var item in ViewBag.tipo)
+                                    {
+                                        <option value=@item.Id.ToString()> @item.Nombre</option>
+                                    }
+                                }
+                            </select>
+                        </div>
                         <div class="col-sm-12 col-md-6 col-xl-3">
                             <input type="text" id="funIdFlujo" hidden>
                             <input type="text" id="funcMant" hidden>
